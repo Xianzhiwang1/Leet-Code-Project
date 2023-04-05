@@ -1,5 +1,7 @@
 # ml-0451-final-proj
 Group menber: Prateek, Xianzhi
+# data source:
+https://chroniclingamerica.loc.gov/
 # Prompt:
 # Write Your Project Proposal
 Write your project proposal in your project repository. For now, you can just use the file README.md to hold your proposal; this has the benefit that GitHub.com will automatically render it for you. Specs for your proposal are below. Here’s what I’m looking for from your proposal:
