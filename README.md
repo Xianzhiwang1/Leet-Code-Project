@@ -1,15 +1,15 @@
 # ml-0451-final-proj
 Group menber: Prateek, Xianzhi
-2 Write Your Project Proposal
+# 2 Write Your Project Proposal
 Write your project proposal in your project repository. For now, you can just use the file README.md to hold your proposal; this has the benefit that GitHub.com will automatically render it for you. Specs for your proposal are below. Here’s what I’m looking for from your proposal:
 
-Expected Sections
+# Expected Sections
 You should include sections in your proposal that address the following topics. Feel free to include additional sections as needed. Remember that you can create Markdown sections using the # character.
 
-Abstract
+# Abstract
 In 3-4 sentences, concisely describe:
 
-What problem your project addresses.
+# What problem your project addresses.
 The overall approach you will use to solve the problem.
 How you propose to evaluate your success against your stated goals.
 Motivation and Question
@@ -21,7 +21,7 @@ We have performance data (e.g. from sports teams) for which predictive models co
 Algorithmic bias is an increasingly urgent challenge as machine learning products proliferate, and we want to explore it more deeply.
 You should be more specific than these: describe your specific data set (if applicable); your scientific questions; the type of decisions your model could inform; etc.
 
-Planned Deliverables
+# Planned Deliverables
 Concisely state what you are aiming to create and what capabilities it will have. For most projects, I would expect the deliverable to include:
 
 A Python package containing all code used for algorithms and analysis, including documentation.
@@ -35,20 +35,20 @@ You should describe what your deliverable will be able to do and how you will ev
 Written Deliverables
 You’ll also write a blog post on your project; you don’t have to discuss this post in your proposal though.
 
-Resources Required
+# Resources Required
 What resources do you need in order to complete your project? Data? Computing power? An account with a specific service?
 
 Please pay special attention to the question of data. If your project idea involves data, include at least one link to a data set you can use. If you can’t find data for your original idea, that’s ok! Think of something related to your group’s interests for which you can find data.
 
 Most projects should involve data in some way, but certain projects may not require data. Ask me if you’re not sure.
 
-What You Will Learn
+# What You Will Learn
 Each group member should return to their stated goals from the reflective goal-setting assignment at the beginning of the course. Then, in this section, please state what each group member intends to learn through working on the project, relating your intentions to your stated goals. You might be thinking of certain algorithms, software packages, version control, project management, effective teamwork, etc.
 
-Risk Statement
+# Risk Statement
 What are two things that could potentially stop you from achieving the full deliverable above? Maybe it turns out that the pattern you thought would be present in the data just doesn’t exist? Or maybe your idea requires more computational power than is available to you? What particular risks might be applicable for your project?
 
-Ethics Statement
+# Ethics Statement
 All projects we undertake involve decisions about whose interests matter; which problems are important; and which tradeoffs are considered acceptable. Take some time to reflect on the potential impacts of your project on its prospective users and the broader world. Address the following questions:
 
 What groups of people have the potential to benefit from our project?
@@ -76,12 +76,12 @@ You have submitted a URL to your GitHub repository on Canvas.
 Length
 There is no specifically required length for the proposal. Generally speaking, I would expect a thoughtful proposal to require around 600-900 words (roughly the length of 2-3 double-spaced pages). However, any length is acceptable provided that it provides thoughtful discussion of each of the required components.
 
-4 Optional Practice: Collaborative Workflows in Git
+# 4 Optional Practice: Collaborative Workflows in Git
 Your proposal should be written on GitHub and contain commits by multiple team members. This is the same workflow that you’ll use for collaborating on your project itself. If members of your team are not familiar with collaborative workflows in Git and GitHub, then you should complete this activity with your team in order to get up to speed.
 
 Working through this mini activity with your group is optional but strongly recommended.
 
-Make a Grid
+# Make a Grid
 It’s possible that your repository already has a top-level file named README.md. If not, a new group member (not the one who created the repo) should create one. Then, this group member should create a code block in the file README.md containing a 3x3 grid of dots, like the below:
 
 . . . 
