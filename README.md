@@ -12,6 +12,9 @@ You should include sections in your proposal that address the following topics. 
 # Abstract
 In 3-4 sentences, concisely describe:
 
+The problem our project addresses is how to predict the probability of slavery being abolished in the Antebellum South, based on analyzing old newspaper. We apply machine learning models to a corpus of text extracted from old newspaper, and our goal is to infer a probability of slavery being abolished. Our approach is to leveraging  
+
+
 # What problem your project addresses.
 The overall approach you will use to solve the problem.
 How you propose to evaluate your success against your stated goals.
