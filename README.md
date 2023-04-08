@@ -1,142 +1,67 @@
 # ml-0451-final-proj
-Group menber: Prateek, Xianzhi
+Group member: Prateek, Xianzhi
 # data source:
 https://chroniclingamerica.loc.gov/
 # Prompt:
-# Write Your Project Proposal
-Write your project proposal in your project repository. For now, you can just use the file README.md to hold your proposal; this has the benefit that GitHub.com will automatically render it for you. Specs for your proposal are below. Here’s what I’m looking for from your proposal:
+# Our Project Proposal
 
-# Expected Sections
-You should include sections in your proposal that address the following topics. Feel free to include additional sections as needed. Remember that you can create Markdown sections using the # character.
 
 # Abstract
-In 3-4 sentences, concisely describe:
-
-The problem our project addresses is how to predict the probability of slavery being abolished in the Antebellum South, based on analyzing old newspaper. We apply machine learning models to a corpus of text extracted from old newspaper, and our goal is to infer a probability of slavery being abolished. Our approach is to leveraging  
 
 
-# What problem your project addresses.
-The overall approach you will use to solve the problem.
-How you propose to evaluate your success against your stated goals.
-Motivation and Question
-Describe your motivation for your project idea. Some (shortened) examples of good types of motivations:
+Our project aims to use textual data from old newspapers to quantify the political risk of the abolition of slavery experienced by plantation owners in the 1850s and 60s in the Antebellum South. We hope to apply the Latent Dirichlet Algorithm to study on our corpus, a collection of newspapers from the 19th century from Chronicling America, to study the pervasiveness of slavery and the conversations surrounding slavery and its abolition. We propose to evaluate our success by how polished our final results are. 
 
-We have a scientific data set for which predictive or expoloratory models would help us generate hypotheses.
-We have user information for which predictive models would help us give users better experiences.
-We have performance data (e.g. from sports teams) for which predictive models could help us make better decisions.
-Algorithmic bias is an increasingly urgent challenge as machine learning products proliferate, and we want to explore it more deeply.
-You should be more specific than these: describe your specific data set (if applicable); your scientific questions; the type of decisions your model could inform; etc.
+
+# Motivation and Question
+
+
+We have a general corpus of text data from https://chroniclingamerica.loc.gov/
+ for which we could test our models and make predictions. We would also look out for bias in machine learning, since our topic is controversial by definition. Our data comes from Chronicling America, and our questions is how to infer the likelihood of slavery being abolished from those newspaper articles in that period. Our model should be about to give predictions that are more or less consistent with what an educated middlebury student would guess.
+
 
 # Planned Deliverables
-Concisely state what you are aiming to create and what capabilities it will have. For most projects, I would expect the deliverable to include:
 
-A Python package containing all code used for algorithms and analysis, including documentation.
-At least one Jupyter notebook illustrating the use of the package to analyze data.
-However, your specific idea might imply different deliverables (e.g. an essay). Consult with me if you’re not sure.
+We will have a Python package containing all code used for algorithms and analysis, including documentation.
+We will have a Jupyter notebook illustrating the use of the package to analyze data.
 
-You should describe what your deliverable will be able to do and how you will evaluate its effectiveness. Please consider two scenarios:
+We might include a short essay to summarize our findings.
+
+We describe what deliverable will be able to do and how we will evaluate its effectiveness. Let’s consider two scenarios:
 
 “Full success.” What will your deliverable be if everything works out for you exactly as you plan?
-“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? For example, maybe you aren’t able to get that webapp together, but you can still create a code repository that showcases the machine learning pipeline needed to use to support the app. Have a contingency plan!
+We will have full success if we could implement a suitable machine learning model that is quite more sophisticated than the naive bag of words approach, and make reasonable predictions about the likelihood regarding slavery being abolished that are consistent with human predictions.
+
+“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? 
+Maybe the ultra sophisticated model is actually not suitable for this question, so we have spent to much time on going down the wrong path. Then, we could demonstrate that this model would work in a different scenario, just not this one.
+
+Alternatively, we could use a more naive approach to study the same time period in a more viable manner.
+
 Written Deliverables
-You’ll also write a blog post on your project; you don’t have to discuss this post in your proposal though.
+We will prepare a blog post summarizing our aims, methods and findings, and our findings easily accessible and publicly available.
 
 # Resources Required
 What resources do you need in order to complete your project? Data? Computing power? An account with a specific service?
+
+We are currently unsure about the level of computing power our project will require.
+We are planning on using the Library of Congress’s Chronicling America project- and are unsure about how we can bulk download the data. It looks as though there are some built in tools we could use (https://chroniclingamerica.loc.gov/about/api/), however, we’re not sure how we can filter by time period and region, and only download the text files. We might need some assistance here.
 
 Please pay special attention to the question of data. If your project idea involves data, include at least one link to a data set you can use. If you can’t find data for your original idea, that’s ok! Think of something related to your group’s interests for which you can find data.
 
 Most projects should involve data in some way, but certain projects may not require data. Ask me if you’re not sure.
 
 # What You Will Learn
-Each group member should return to their stated goals from the reflective goal-setting assignment at the beginning of the course. Then, in this section, please state what each group member intends to learn through working on the project, relating your intentions to your stated goals. You might be thinking of certain algorithms, software packages, version control, project management, effective teamwork, etc.
+
+I hope to better understand how Natural Language Processing works, and how I can use some of these techniques to study historical textual data. I also hope that this project will help improve my ability to work collaboratively, and take on creative risks. The risk of working on something somewhat independently can feel daunting and requires a good deal of grit to get through. I hope that this experience with this project will make me a more skilled manager, and effectively, a better researcher.
 
 # Risk Statement
-What are two things that could potentially stop you from achieving the full deliverable above? Maybe it turns out that the pattern you thought would be present in the data just doesn’t exist? Or maybe your idea requires more computational power than is available to you? What particular risks might be applicable for your project?
+
+We only have a surface level understanding of the Latent Dirichlet Algorithm and are concerned about the degree to which we may be able to implement it. If this approach does not appear to be viable for us anymore, we might need to use a more naive approach, akin to the bag of words- vectorization approach used in class to study the sentiment of covid 19 tweets.
+
+The OCR used by Chronicling America is filled with errors. If the level of errors makes it impossible for us to parse the text through our program, we might need to pivot slightly and use a different, more modern dataset of newspapers.
+
 
 # Ethics Statement
-All projects we undertake involve decisions about whose interests matter; which problems are important; and which tradeoffs are considered acceptable. Take some time to reflect on the potential impacts of your project on its prospective users and the broader world. Address the following questions:
 
-What groups of people have the potential to benefit from our project?
-What groups of people have the potential to be excluded from benefit or even harmed from our project?
-Will the world become an overall better place because we made our project? Describe at least 2 assumptions behind your answer. For example, if your project aims to make it easier to predict crime, your assumptions might include:
-Criminal activity is predictable based on other features of a person or location.
-The world is a better place when police are able to perform their roles more efficiently.
-If your project involves making decisions or recommendations, then you will also need to consider possible forms of algorithmic bias in your work. Here are some relevant examples:
+We are both deeply interested in the economic history of capitalism, how it impacts and how it impacts different groups of people. I (Prateek) am hoping to incorporate this model into a larger study that assess how plantations assessed the political risk of the abolition of slavery. I am currently using data on elections in the 1850s and 60s as a proxy for political risk- however- I also hope to use my results from this model for added robustness. In addition to being cruel and inhumane, slavery in the Antebellum South depressed wages and stunted the region’s economic development. However, the level of economic dependence on slavery, in addition to the predominantly white voting base’s racist tendencies, led to further entrenchment. Similar arguments of economic dependence are frequently made against other progressive political reforms. Studying how firms choose to hedge or leverage their position in the face of political risk can help inform how progressive policies can be implemented while minimizing economic disruption. We also hope to construct a dataset that future scholars of the history and economics of racism can use to better understand the roots of capitalism and racism in America.
 
-A recipe recommendation app can privilege the cuisines of some locales over others. Will your user search recipes by ingredients? Peanut butter and tomato might seem an odd combination in the context of European cuisine, but is common in many traditional dishes of the African diaspora. A similar set of questions applies to recommendation systems related to style or beauty.
-A sentiment analyzer must be trained on specific languages. What languages will be included? Will diverse dialects be included, or only the “standard” version of the target language? Who would be excluded by such a choice, and how will you communicate about your limitations?
-Tentative Timeline
-We will have a checkpoint for the project in Week 9 or 10, and then final presentations in Week 12. With this in mind, please describe what you expect to achieve after three and six. Your goal by the three-week check-in should be to have “something that works.” For example, maybe in three weeks you’ll ready to demonstrate the data acquisition pipeline and show some exploratory analysis, and in the last couple weeks you’ll actually implement your machine learning models.
-
-The “something that works” idea is related to the common concept of “minimum viable products” in software development, and is visually illustrated here:
-First row: sad faces above a single wheel, two wheels, a car without a roof, and finally a happy face above a completed car. Second row: a face becoming progressively happier above a skateboard, scooter, bicycle, motorcycle, and car.
-3 General Expectations
-Your proposal is acceptably complete if if:
-
-The proposal is hosted on GitHub as the top-level README.md file in a repository hosted by one of the group members.
-Each team member has made at least two commits to this file, which in total demonstrate substantial commitments to the writing of the proposal.
-The proposal contains thoughtful discussion in each of the required sections, which addresses all of the relevant questions posed in each one.
-The proposal is written in clear English prose. Within reason, grammatical mistakes are not a problem.
-You have submitted a URL to your GitHub repository on Canvas.
-Length
-There is no specifically required length for the proposal. Generally speaking, I would expect a thoughtful proposal to require around 600-900 words (roughly the length of 2-3 double-spaced pages). However, any length is acceptable provided that it provides thoughtful discussion of each of the required components.
-
-# 4 Optional Practice: Collaborative Workflows in Git
-Your proposal should be written on GitHub and contain commits by multiple team members. This is the same workflow that you’ll use for collaborating on your project itself. If members of your team are not familiar with collaborative workflows in Git and GitHub, then you should complete this activity with your team in order to get up to speed.
-
-Working through this mini activity with your group is optional but strongly recommended.
-
-# Make a Grid
-It’s possible that your repository already has a top-level file named README.md. If not, a new group member (not the one who created the repo) should create one. Then, this group member should create a code block in the file README.md containing a 3x3 grid of dots, like the below:
-
-. . . 
-. . .
-. . .
-Save, commit, and push. All other group members should now pull, so that they have the grid of dots as well.
-
-Play Tic-Tac-Toe
-If you have more than two people, separate into two teams – it’s ok if they are not the same size. Play a few games of Tic-Tac-Toe by replacing the dots in the grid you made with the symbol X or O. Here’s how to make a move:
-
-A member of Team X deletes a dot and replaces it with an X.
-This member commits and pushes their change.
-All other team members pull, so that the move is reflected in their file.
-A member of Team O deletes a dot and replaces it with an O…
-By playing some Tic-Tac-Toe, you practice the fundamental pull-commit-push workflow of collaboration. Make sure that every group member gets a chance to make a move, commit their move, and push at least twice.
-
-Merging
-Create a new, blank Tic-Tac-Toe game. Imagine that Team X and Team O miscommunicated about who would go first, so they both make moves simultaneously. Test out the following scenarios.
-
-Scenario 1:
-
-Team X makes the following move:
-
-. . . 
-. . .
-. X .
-Team O makes the following move:
-
-. O . 
-. . .
-. . .
-Both teams should now attempt to commit and push. One team will be prompted to pull prior to pushing. This pull will prompt a merge, since two changes were made to the same file. Observe what happens, commit, and then push. Pull as needed so that both teams have both moves in their file.
-
-Scenario 2:
-
-Team X makes the following move:
-
-. . . 
-. X .
-. . .
-Team O makes the following move:
-
-. . . 
-. O .
-. . .
-The current representative of each team should commit these respective moves, and attempt to push.
-
-Whoops! One team will be prompted to pull, and after pulling will be informed that there is a merge conflict in the repository. Inspect the file. Notice that the relevant part of the file now looks very weird. If you look closely, you can find lines corresponding both to the X move and to the O move. Pick one (arbitrarily), and commit/push the result.
-
-This is an example of the process used to handle merge conflicts, which occur when separate team members have modified the same file in conflicting ways.
-
-It’s recommended, but not required, that your team members take some time on their own to do a little reading on how merge conflicts work. This page gives a good explanation, and also covers the (optional but highly useful) topic of branching.
+I understand that, when studying a period history as cruel as this one, it is essential to be cognizant about the level of harm caused. Slavery, as an institution, resulted in the kidnapping and commodification of millions of black people for the profit of mostly white slave traders and plantation owners. The language used in newspapers in this period can be extremely disturbing. Nevertheless, the study of this period is essential for us to understand how the histories of racism and capitalism are deeply intertwined with one another. It is extremely important for us to work with this data in a manner that is sensitive and tasteful.
