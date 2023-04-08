@@ -1,8 +1,8 @@
 # ml-0451-final-proj
-Group member: Prateek, Xianzhi
+Group members: Prateek, Xianzhi
 # data source:
 https://chroniclingamerica.loc.gov/
-# Prompt:
+# Prompt: Chronicling Slavery in the Antebellum South
 # Our Project Proposal
 
 
