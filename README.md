@@ -28,10 +28,10 @@ We might include a short essay to summarize our findings.
 
 We describe what deliverable will be able to do and how we will evaluate its effectiveness. Let’s consider two scenarios:
 
-“Full success.” What will your deliverable be if everything works out for you exactly as you plan?
+“Full success:” 
 We will have full success if we could implement a suitable machine learning model that is quite more sophisticated than the naive bag of words approach, and make reasonable predictions about the likelihood regarding slavery being abolished that are consistent with human predictions.
 
-“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? 
+“Partial success:” 
 Maybe the ultra sophisticated model is actually not suitable for this question, so we have spent to much time on going down the wrong path. Then, we could demonstrate that this model would work in a different scenario, just not this one.
 
 Alternatively, we could use a more naive approach to study the same time period in a more viable manner.
