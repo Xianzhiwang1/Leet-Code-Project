@@ -2,21 +2,18 @@
 Group members: Prateek, Xianzhi
 # data source:
 https://chroniclingamerica.loc.gov/
-# Prompt: Chronicling Slavery in the Antebellum South
+# Prompt: Predicting productivity on farms in Middlebury, Vermont in 1850 and 1860.
 # Our Project Proposal
 
 
 # Abstract
 
-
-Our project aims to use textual data from old newspapers to quantify the political risk of the abolition of slavery experienced by plantation owners in the 1850s and 60s in the Antebellum South. We hope to apply the Latent Dirichlet Algorithm to study on our corpus, a collection of newspapers from the 19th century from Chronicling America, to study the pervasiveness of slavery and the conversations surrounding slavery and its abolition. We propose to evaluate our success by how polished our final results are. 
+Our project uses historical primary data, which are scans of farm records, we have roughly 400 data entries. We are interested in what contributes to higher productivity on a farm.  
 
 
 # Motivation and Question
-
-
-We have a general corpus of text data from https://chroniclingamerica.loc.gov/
- for which we could test our models and make predictions. We would also look out for bias in machine learning, since our topic is controversial by definition. Our data comes from Chronicling America, and our questions is how to infer the likelihood of slavery being abolished from those newspaper articles in that period. Our model should be about to give predictions that are more or less consistent with what an educated middlebury student would guess.
+We 
+for which we could test our models and make predictions. We would also look out for bias in machine learning, since our topic is controversial by definition. Our data comes from Chronicling America, and our questions is how to infer the likelihood of slavery being abolished from those newspaper articles in that period. Our model should be about to give predictions that are more or less consistent with what an educated middlebury student would guess.
 
 
 # Planned Deliverables
