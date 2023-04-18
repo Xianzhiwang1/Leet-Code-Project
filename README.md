@@ -8,6 +8,8 @@ https://chroniclingamerica.loc.gov/
 
 # Abstract
 
+change 123
+
 Our project uses historical primary data, which are scans of farm records, we have roughly 400 data entries. We are interested in what contributes to higher productivity on a farm.  
 Alternatively, we could also use supervised learning to look at how different variables relate to the cash value of the farm. Cash value measured in 1850 and 1860 USD, and convert to the current dollar value.
 
