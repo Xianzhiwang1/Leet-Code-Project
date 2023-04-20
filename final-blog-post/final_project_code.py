@@ -61,11 +61,11 @@ class FinalProject:
         axarr[i].set(xlabel = X.columns[0], 
                 ylabel  = X.columns[1])
         
-        patches = []
-        for color, spec in zip(["red", "green", "blue"], ["Adelie", "Chinstrap", "Gentoo"]):
-            patches.append(Patch(color = color, label = spec))
+        # patches = []
+        # for color, spec in zip(["red", "green", "blue"], ["Adelie", "Chinstrap", "Gentoo"]):
+        #     patches.append(Patch(color = color, label = spec))
 
-        plt.legend(title = "Species", handles = patches, loc = "best")
+        # plt.legend(title = "Species", handles = patches, loc = "best")
         
         plt.tight_layout()
 
