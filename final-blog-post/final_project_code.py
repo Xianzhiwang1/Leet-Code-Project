@@ -55,20 +55,20 @@ class FinalProject:
         
         
         # use contour plot to visualize the predictions
-        axarr[i].contourf(xx, yy, p, cmap = "jet", alpha = 0.2, vmin = 0, vmax = 2)
+        axarr[i].contourf(xx, yy, p, cmap = "jet", alpha = 0.2, vmin = 0, vmax = 1)
         
         ix = X[qual_features[i]] == 1
         # plot the data
-        axarr[i].scatter(x0[ix], x1[ix], c = y[ix], cmap = "jet", vmin = 0, vmax = 2)
+        axarr[i].scatter(x0[ix], x1[ix], c = y[ix], cmap = "jet", vmin = 0, vmax = 1) 
         
         axarr[i].set(xlabel = X.columns[0], 
                 ylabel  = X.columns[1])
         
-        # patches = []
-        # for color, spec in zip(["red", "green", "blue"], ["Adelie", "Chinstrap", "Gentoo"]):
-        #     patches.append(Patch(color = color, label = spec))
+        patches = []
+        for color, spec in zip(["red", "blue"], ["1", "0"]):
+            patches.append(Patch(color = color, label = spec))
 
-        # plt.legend(title = "Species", handles = patches, loc = "best")
+        plt.legend(title = "Species", handles = patches, loc = "best")
         
         plt.tight_layout()
 
