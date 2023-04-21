@@ -1,4 +1,6 @@
 import numpy as np
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from matplotlib.patches import Patch
@@ -92,6 +94,19 @@ class FinalProject:
                 LR.fit(df[cols], y)
                 score = LR.score(df[cols], y)
                 self.feature_score_pair[tuple(cols)] = score
+
+
+    def print_confusion_matrix(self, model, X, y):
+        my_matr = confusion_matrix(y, model.predict(X), normalize="true")
+        fig, ax = plt.subplots(figsize=(4,4))
+        ax.imshow(my_matr)
+        ax.xaxis.set(ticks=(0,1), ticklabels=('Predicted False', 'Predicted True'))
+        ax.yaxis.set(ticks=(0,1), ticklabels=('Actually False', 'Actually True'))
+        ax.set_ylim(1.5, -0.5)
+
+        for i in range(2):
+            for j in range(2):
+                ax.text(j,i, my_matr[i,j].round(3), ha='center', va='center', color='black')
 
 
     
