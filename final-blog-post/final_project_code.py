@@ -3,11 +3,14 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from matplotlib.patches import Patch
 import matplotlib.pyplot as plt
+from itertools import combinations
+from sklearn.linear_model import LogisticRegression
 le = LabelEncoder()
 
 class FinalProject:
     def __init__(self):
-        pass
+        self.qual_cols = None
+        self.feature_score_pair = dict()
 
     def preparing_data(self, df):
         # le.fit(df["Species"])
@@ -77,6 +80,18 @@ class FinalProject:
     def split_data(self, df):
         train, validate, test = np.split(df.sample(frac=1, random_state=42), [int(.6*len(df)), int(.8*len(df))])
         return train, validate, test  
+
+    def feature_combo(self, all_qual_cols, all_quant_cols, df, y): 
+        for qual in all_qual_cols: 
+            self.qual_cols = [col for col in df.columns if qual in col ]
+            for pair in combinations(all_quant_cols, 2):
+                cols = self.qual_cols + list(pair) 
+                # you could train models and score them here, keeping the list of 
+                # columns for the model that has the best score. 
+                LR = LogisticRegression()
+                LR.fit(df[cols], y)
+                score = LR.score(df[cols], y)
+                self.feature_score_pair[tuple(cols)] = score
 
 
     
