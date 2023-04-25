@@ -1,33 +1,34 @@
 # ml-0451-final-proj
 Group members: Prateek, Xianzhi
 # data source:
-https://chroniclingamerica.loc.gov/
-# Prompt: Predicting productivity on farms in Middlebury, Vermont in 1850 and 1860.
+Factory Productivity and the Concession System of Incorporation in Late Imperial Russia, 1894 - 1908. Replication data set package by Amanda G. Gregg.
+(here)[https://www.aeaweb.org/articles?id=10.1257/aer.20151656] is the url, hosted on American Economic Association review.
+# Prompt: Predicting which factory was incorporated, i.e., owned by an incorporated firm in the historical setting of Late Imperial Russia during 1894 to 1908
 # Our Project Proposal
 
 
 # Abstract
 
-Our project uses historical primary data, which are scans of farm records, we have roughly 400 data entries. We are interested in what contributes to higher productivity on a farm.  
-Alternatively, we could also use supervised learning to look at how different variables relate to the cash value of the farm. Cash value measured in 1850 and 1860 USD, and convert to the current dollar value.
+Our project uses historical primary data, which are scans of Russian records, digitized, cleaned, and curated by Prof. Amanda G. Gregg, that is freely available on American Economic Association's website. We are interested in what are the features contributing to a factory being incorporated in this historical setting. We need to note that this is an unbalanced data set, in the sense that most factories are not incorporated. 
+
+We are interested in using supervised learning to look at how different features relate to the dependent variable, which is incorporated or not. 
 
 
 # Motivation and Question
-We 
-for which we could test our models and make predictions. We would also look out for bias in machine learning, since our topic is controversial by definition. Our data comes from Chronicling America, and our questions is how to infer the likelihood of slavery being abolished from those newspaper articles in that period. Our model should be about to give predictions that are more or less consistent with what an educated middlebury student would guess.
-
+We are interested in identifying what are the factors a factory might considered before they make a decision to incorporate or not, in this historical setting.
+We would like to use this replication data set to test our machine learning models (logistic regression, etc) and make predictions. We would also look out for bias in machine learning, since our data set is unbalanced. Also, it is a historical fact that there was only a low percentage of incorporation going on in Late Imperial Russia at that time. Our data comes from (here)[https://www.aeaweb.org/articles?id=10.1257/aer.20151656], and our question is how to predict whether a factory incorporate or not in that period. Our model should be about to give predictions that are more or less consistent with the arguments presented in the published paper, "Factory Productivity and the Concession System of Incorporation in Late Imperial Russia, 1894-1908."
 
 # Planned Deliverables
 
 We will have a Python package containing all code used for algorithms and analysis, including documentation.
 We will have a Jupyter notebook illustrating the use of the package to analyze data.
 
-We might include a short essay to summarize our findings.
+We plan to include presentation slides to summarize our findings.
 
 We describe what deliverable will be able to do and how we will evaluate its effectiveness. Let’s consider two scenarios:
 
 “Full success:” 
-We will have full success if we could implement a suitable machine learning model that is quite more sophisticated than the naive bag of words approach, and make reasonable predictions about the likelihood regarding slavery being abolished that are consistent with human predictions.
+We will have full success if we could implement a suitable machine learning model that is more sophisticated than simply applying the out-of-the-box sklearn functions, and make reasonable predictions about whether factories incorporate in Late Imperial Russia, 1894 - 1908.
 
 “Partial success:” 
 Maybe the ultra sophisticated model is actually not suitable for this question, so we have spent to much time on going down the wrong path. Then, we could demonstrate that this model would work in a different scenario, just not this one.
@@ -41,7 +42,7 @@ We will prepare a blog post summarizing our aims, methods and findings, and our 
 What resources do you need in order to complete your project? Data? Computing power? An account with a specific service?
 
 We are currently unsure about the level of computing power our project will require.
-We are planning on using the Library of Congress’s Chronicling America project- and are unsure about how we can bulk download the data. It looks as though there are some built in tools we could use (https://chroniclingamerica.loc.gov/about/api/), however, we’re not sure how we can filter by time period and region, and only download the text files. We might need some assistance here.
+We are planning on using the replication data set in the link provided before. 
 
 Please pay special attention to the question of data. If your project idea involves data, include at least one link to a data set you can use. If you can’t find data for your original idea, that’s ok! Think of something related to your group’s interests for which you can find data.
 
@@ -49,13 +50,11 @@ Most projects should involve data in some way, but certain projects may not requ
 
 # What You Will Learn
 
-I hope to better understand how Natural Language Processing works, and how I can use some of these techniques to study historical textual data. I also hope that this project will help improve my ability to work collaboratively, and take on creative risks. The risk of working on something somewhat independently can feel daunting and requires a good deal of grit to get through. I hope that this experience with this project will make me a more skilled manager, and effectively, a better researcher.
+We hope to better understand how logistic regression works, and how we can use some of these techniques to study historical data. we also hope that this project will help improve our ability to work collaboratively, and take on creative risks. The risk of working on something somewhat independently can feel daunting and requires a good deal of grit to get through. We hope that this experience with this project will make us into more skilled managers, and effectively, better researchers.
 
 # Risk Statement
 
-We only have a surface level understanding of the Latent Dirichlet Algorithm and are concerned about the degree to which we may be able to implement it. If this approach does not appear to be viable for us anymore, we might need to use a more naive approach, akin to the bag of words- vectorization approach used in class to study the sentiment of covid 19 tweets.
-
-The OCR used by Chronicling America is filled with errors. If the level of errors makes it impossible for us to parse the text through our program, we might need to pivot slightly and use a different, more modern dataset of newspapers.
+We only have a beginner level understanding of the Newton method for logistic regression, ROC curve, and support vector machines, and we are concerned about the degree to which we may be able to implement it. If this approach does not appear to be viable for us anymore, we might need to use a more naive approach, akin to the standard implementation of logistic regression approach used in class as one of the blog posts.
 
 
 # Ethics Statement
