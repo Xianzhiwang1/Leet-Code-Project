@@ -2,7 +2,7 @@
 Group members: Prateek, Xianzhi
 # data source:
 Factory Productivity and the Concession System of Incorporation in Late Imperial Russia, 1894 - 1908. Replication data set package by Amanda G. Gregg.
-(here)[https://www.aeaweb.org/articles?id=10.1257/aer.20151656] is the url, hosted on American Economic Association review.
+(here)[https://www.aeaweb.org/articles?id=10.1257/aer.20151656] is the url, hosted on American Economic Association.
 # Prompt: Predicting which factory was incorporated, i.e., owned by an incorporated firm in the historical setting of Late Imperial Russia during 1894 to 1908
 # Our Project Proposal
 
