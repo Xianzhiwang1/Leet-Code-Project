@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Our CSCI 0451 Final Project"
+  navbar:
+    background: "#112a39"
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/
+      - icon: twitter
+        href: https://twitter.com
+
+format:
+  html:
+    title-block-banner: img/landscape.png
+    title-block-banner-color: white
+    theme: cosmo
+    css: styles.css
+
+
+
+
+
