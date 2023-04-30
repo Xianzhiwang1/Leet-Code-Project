@@ -144,6 +144,47 @@ class FinalProject:
             mean_score = cv_scores.mean()  
             print(f"Polynomial degree = {deg}, score = {mean_score.round(3)}")
 
+
+    '''
+Logistic Regression and Newton Raphson 
+    '''
+    def sigmoid(self, x: np.array):
+        return 1/(1+np.exp(-x))
+
+    def prob(self, X: np.array, beta: np.array):
+        '''
+        probability
+        '''
+        return self.sigmoid(X.T @ beta) 
+
+    def Var(self, p: np.array):
+        return np.diag(p*(1-p))
+
+    def Hessian(self, X: np.array, beta: np.array):
+        return X.T @ self.Var(self.prob(X, beta)) @ X
+
+    def update(self, y, X, beta):
+        grad = X.T@(y-self.prob(X,beta))
+        beta = beta + np.linalg.inv(self.Hessian(X,beta)) @ grad 
+        return beta
+
+    def regress(self, y, X, beta_old, max_iters = 200, tol=0.01, converged=False):
+        iter_count = 0 
+        while not converged and (iter_count<max_iters):
+            beta = self.update(y, X, beta_old)
+            if np.any(np.abs(beta_old - beta)<tol):
+                converged = True
+            iter_count += 1
+
+
+    
+
+        
+
+
+         
+
+
     
 
 
