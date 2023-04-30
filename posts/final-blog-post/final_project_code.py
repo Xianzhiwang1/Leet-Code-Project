@@ -22,6 +22,7 @@ class FinalProject:
     def __init__(self):
         self.qual_cols = None
         self.feature_score_pair = dict()
+        self.beta = None
 
 
 
@@ -155,7 +156,9 @@ Logistic Regression and Newton Raphson
         '''
         probability
         '''
-        return self.sigmoid(X.T @ beta) 
+        return np.array(self.sigmoid(np.dot(X.T,beta)))
+        # return self.sigmoid(X.T @ beta)
+        # return self.sigmoid(X @ beta)
 
     def Var(self, p: np.array):
         return np.diag(p*(1-p))
@@ -164,15 +167,19 @@ Logistic Regression and Newton Raphson
         return X.T @ self.Var(self.prob(X, beta)) @ X
 
     def update(self, y, X, beta):
-        grad = X.T@(y-self.prob(X,beta))
+        print(X.T.shape)
+        print(y.shape)
+        print(self.prob(X,beta).shape)
+        grad = np.dot(X.T, (y-self.prob(X,beta)))
+
         beta = beta + np.linalg.inv(self.Hessian(X,beta)) @ grad 
         return beta
 
     def regress(self, y, X, beta_old, max_iters = 200, tol=0.01, converged=False):
         iter_count = 0 
         while not converged and (iter_count<max_iters):
-            beta = self.update(y, X, beta_old)
-            if np.any(np.abs(beta_old - beta)<tol):
+            self.beta = self.update(y, X, beta_old)
+            if np.any(np.abs(beta_old - self.beta)<tol):
                 converged = True
             iter_count += 1
 
