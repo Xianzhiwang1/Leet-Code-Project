@@ -6,7 +6,7 @@ Factory Productivity and the Concession System of Incorporation in Late Imperial
 # Prompt: Predicting which factory was incorporated, i.e., owned by an incorporated firm in the historical setting of Late Imperial Russia during 1894 to 1908
 # Our Project Proposal
 
-2
+
 # Abstract
 
 We aim to study the history and effects of incorporation in Russia. Our project uses historical primary data from Russian factory censuses which were digitized, cleand and curated by Professor Amanda Gregg and are freely available on the American Economic Association's website. While economic historians frequently bicker about the origins and effectiveness of corporations- most agree that the 19th century witnessed the rise of the corporate business form in Europe and North America. Firms in Russia began incorporatinng relatively late- in the late 19th century. We aim to study the factors that may lead to a firm choosing to incorporate- and to study the effects of incorporation on the firm itself. We intend to use supervised learning and feature engineering to study the variables that are the most influenced incorporation, and the variables that make incorporation more likely. We need to note that this is an unbalanced data set, in the sense that most factories are not incorporated. 
@@ -48,7 +48,7 @@ Please pay special attention to the question of data. If your project idea invol
 
 Most projects should involve data in some way, but certain projects may not require data. Ask me if you’re not sure.
 
-# What You Will Learn
+# What We Will Learn
 
 We hope to better understand how logistic regression works, and how we can use some of these techniques to study historical data. we also hope that this project will help improve our ability to work collaboratively, and take on creative risks. The risk of working on something somewhat independently can feel daunting and requires a good deal of grit to get through. We hope that this experience with this project will make us into more skilled managers, and effectively, better researchers.
 
