@@ -156,22 +156,35 @@ Logistic Regression and Newton Raphson
         '''
         probability
         '''
-        return np.array(self.sigmoid(np.dot(X.T,beta)))
+        return np.array(self.sigmoid(np.dot(X,beta)))
         # return self.sigmoid(X.T @ beta)
         # return self.sigmoid(X @ beta)
 
     def Var(self, p: np.array):
-        return np.diag(p*(1-p))
+        on_diag = p*(1-p)
+        d = on_diag.reshape(-1)
+        return np.diag(d)
 
     def Hessian(self, X: np.array, beta: np.array):
-        return X.T @ self.Var(self.prob(X, beta)) @ X
+        '''
+        print(f"X.T.shape {X.T.shape}")
+        print(f"X.shape {X.shape}")
+        print(f"VAR.shape {V.shape}")
+        print(XV.shape)
+        '''
+        V = self.Var(self.prob(X,beta))
+        XV = X.T @ V
+        result = np.dot(XV, X)
+
+        return result
 
     def update(self, y, X, beta):
+        '''
         print(X.T.shape)
         print(y.shape)
         print(self.prob(X,beta).shape)
-        grad = np.dot(X.T, (y-self.prob(X,beta)))
-
+        '''
+        grad = X.T @ (y-self.prob(X,beta))
         beta = beta + np.linalg.inv(self.Hessian(X,beta)) @ grad 
         return beta
 
