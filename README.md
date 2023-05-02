@@ -30,7 +30,7 @@ We plan to include presentation slides to summarize our findings.
 We describe what deliverable will be able to do and how we will evaluate its effectiveness. Let’s consider two scenarios:
 
 “Full success:” 
-We will have full success if we could implement a suitable machine learning model that is more sophisticated than simply applying the out-of-the-box sklearn functions, and make reasonable predictions about whether factories incorporate in Late Imperial Russia, 1894 - 1908.
+We will have full success if we could implement a suitable machine learning model (for example, code up logistic regression using Newton's method) that is more sophisticated than simply applying the out-of-the-box sklearn functions, and make reasonable predictions about whether factories incorporate in Late Imperial Russia, 1894 - 1908.
 
 “Partial success:” 
 Maybe the ultra sophisticated model is actually not suitable for this question, so we have spent to much time on going down the wrong path. Then, we could demonstrate that this model would work in a different scenario, just not this one.
@@ -43,12 +43,9 @@ We will prepare a blog post summarizing our aims, methods and findings, and our 
 # Resources Required
 What resources do you need in order to complete your project? Data? Computing power? An account with a specific service?
 
-We are currently unsure about the level of computing power our project will require.
-We are planning on using the replication data set in the link provided before. 
+We are currently unsure about the level of computing power our project will require. We think our laptop should have enough computing power for the job.
+We are planning on using the replication data set in the link provided before. This data set is open to the public and could be accessed without any paywall.
 
-Please pay special attention to the question of data. If your project idea involves data, include at least one link to a data set you can use. If you can’t find data for your original idea, that’s ok! Think of something related to your group’s interests for which you can find data.
-
-Most projects should involve data in some way, but certain projects may not require data. Ask me if you’re not sure.
 
 # What We Will Learn
 
