@@ -20,19 +20,10 @@ from sklearn.model_selection import cross_val_score
 
 class FinalProject:
 
-    def __init__(self, kernel, **kernel_kwargs):
-        self.kernel = kernel
-        self.kernel_kwargs = kernel_kwargs
+    def __init__(self) -> None:
         self.qual_cols = None
         self.feature_score_pair = dict()
         self.beta = None
-
-    def predict(self, X):
-        innerProd = X @ self.beta
-        y_hat = 1 * (innerProd > 50)
-        return y_hat
-
-
 
     def try_to_plot_decision_regioin(self, X_train, y_train, cols):
         clf = SVC(C=100,gamma=0.0001)
@@ -154,9 +145,16 @@ class FinalProject:
             print(f"Polynomial degree = {deg}, score = {mean_score.round(3)}")
 
 
+
+
+
     '''
 Logistic Regression and Newton Raphson 
     '''
+class NR():
+    def __init__(self, *kernel, **kernel_kwargs):
+        self.kernel = kernel
+        self.kernel_kwargs = kernel_kwargs
     def sigmoid(self, x: np.array):
         return 1/(1+np.exp(-x))
 
@@ -205,6 +203,11 @@ Logistic Regression and Newton Raphson
             iter_count += 1
 
         self.beta = self.beta.to_numpy()
+
+    def predict(self, X):
+        innerProd = X @ self.beta
+        y_hat = 1 * (innerProd > 50)
+        return y_hat
 
 
     
