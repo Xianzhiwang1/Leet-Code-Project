@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Prateek and Xianzhi">
-<meta name="dcterms.date" content="2023-04-20">
+<meta name="dcterms.date" content="2023-05-02">
 <meta name="description" content="Final Project on prediction of Incorporation using replication data file on Russian Historical Factory level data from Professor Gregg, Middlebury College, Vermont">
 
 <title>Our CSCI 0451 Final Project - ML Final Project</title>
@@ -201,7 +201,7 @@ background-size: cover;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 20, 2023</p>
+        <p class="date">May 2, 2023</p>
       </div>
     </div>
       
@@ -219,18 +219,39 @@ background-size: cover;
 
 
 <p>The source code for this project could be found <a href="https://github.com/Xianzhiwang1/ml-0451-final-proj">here</a>. We have a <code>README.md</code> file that outlines what our project want to achieve, and roughly how we are going to implement the models and analysis. We also have a separate <code>.txt</code> file that gives a dictionary of all the variable names and their actual meaning. Hence, we encourage the reader to also reference that <code>.txt</code> file to remember which variable means what.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<ul>
+<li><p>What is incorporation and why it matters Incorporation is the process by which a firm becomes a corporation.</p></li>
+<li><p>What is the history of incorporation like</p></li>
+<li><p>Some historical context about Russia and descriptions about the Russians system of incorporation Russia followed the concession system of incorporation.</p></li>
+</ul>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<ul>
+<li>Where the data comes from</li>
+</ul>
+<p>The Russian factory censuses from 1894, 1900 and 1908</p>
+<ul>
+<li>What the data includes</li>
+</ul>
+<p>The data is factory level and includes the following information:</p>
+<ul>
+<li>What we’re hoping to do with the data</li>
+<li>Some summary statistics</li>
+</ul>
 <p>First, let us import some libraries that will become useful down the road. Also, the following snippet will automatically reload the <code>final_project_code.py</code> file where we keep our functions.</p>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> final_project_code <span class="im">import</span> FinalProject </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
@@ -238,7 +259,7 @@ background-size: cover;
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.plotting <span class="im">import</span> plot_decision_regions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="85">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -248,31 +269,31 @@ background-size: cover;
 <section id="read-in-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="read-in-the-data">Read in the data</h3>
 <p>Let us create an instance of the class we defined in <code>final_project_code.py</code>, and let us read in the entire data set.</p>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>FP <span class="op">=</span> FinalProject()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="47">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Rvss <span class="op">=</span> pd.read_csv(<span class="st">"./AG_Corp_Prod_DataBase.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_82390/139095848.py:1: DtypeWarning: Columns (3,13) have mixed types. Specify dtype option on import or set low_memory=False.
+<pre><code>/tmp/ipykernel_23326/139095848.py:1: DtypeWarning: Columns (3,13) have mixed types. Specify dtype option on import or set low_memory=False.
   Rvss = pd.read_csv("./AG_Corp_Prod_DataBase.csv")</code></pre>
 </div>
 </div>
 <p>First, let’s do some data visualization. We are interested in seeing which industry in Late Imperial Russia had high machine power (measured in horsepower) and have high number of workers. We also want to get a sense of the distribution of machine power and number of workers, and visualize them by industry. Hence, let’s focus on the picture below. We see that roughly, factory with more machine power tend to also have more workers, and most company cluster at the <span class="math inline">\(2000\)</span> horse power level, and <span class="math inline">\(2500\)</span> workers.</p>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-jupyter="{&quot;outputs_hidden&quot;:true}" data-tags="[]" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sns.jointplot(data<span class="op">=</span>Rvss, x<span class="op">=</span><span class="st">"TotalWorkers"</span>, y <span class="op">=</span> <span class="st">"TotalPower"</span>, hue<span class="op">=</span><span class="st">"Industry"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
-<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x7f22877389a0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x7f850285fc70&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Similarly, here’s another plot to visualize the unbalanced nature of the data set. Here, <code>Form</code> is the desired label that we want to predict. <code>Form</code> taking a value of <span class="math inline">\(1\)</span> means that factory was incorporated, i.e., it was owned by a incorporated firm. If <code>Form</code> take the value of <span class="math inline">\(0\)</span>, then that factory was not incorporated. In the next plot, instead of <code>TotalPower</code>, which stands for Total amount of horse power and <code>TotalWorkers</code>, which stands for total number of workers, we use <code>logPowerperWorker</code> and <code>logRevperWorker</code> as our y-axis and our x-axis. <code>logPowerperWorker</code> is obtained by taking the log of <span class="math inline">\(\frac{Power}{Worker}\)</span>, and <code>logRevperWorker</code> is log of <span class="math inline">\(\frac{Revenue}{Worker}\)</span>. And the hue is whether the factory is encorporated or not. Again, we see that the orange dots, which corresponds to <span class="math inline">\(1\)</span>, which corresponds to encorporated, is a very small percentage of all the factories. Most factories are not encorporated. Also, we observe that the data points follows a bell-shaped distribution on the two dimensions.</p>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sns.jointplot(data<span class="op">=</span>Rvss, x<span class="op">=</span><span class="st">"logRevperWorker"</span>, y<span class="op">=</span><span class="st">"logPowerperWorker"</span>, hue <span class="op">=</span> <span class="st">"Form"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x7f2286d1da00&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x7f8501ed73a0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
@@ -288,9 +309,9 @@ background-size: cover;
 <p>Let us first get out definitions straight. Unbalanced data refers to those datasets where the target label has an uneven distribution of observations, First, we try to randomly sample the majority data set, which in this case, is when the label equals unincorporated. Then we keep all the data entries of the minority data set, and add in the randomly sampled extract of the majority data set with size equal to the minority data set. Then we perform logistic regression on this new data set. The good news is that our new data set is balanced, and the bad news is that we loose a lot of information by discarding many data entries in the majority data set.</p>
 <p>Whether to incorporate or not is an interesting question for factories and firms in late Imperial Russia. There were many factors that might affect a firm’s decision to incorporate or not, including the overall size of the factory, which could be seen in features such as total machine power of the factory and the total number of workers in a factory. Other factors such as the geographical location of the factory (i.e.&nbsp;which region it was located in) could also play a role. Since the decision to incorporate could be affected by many features, we see that some <em>feature engineering</em> could be beneficial for our analysis.</p>
 <p>We download the replication data set and put it in the same directory as our project. After we read in the data, we notice that there are <span class="math inline">\(66\)</span> columns, which means potentially we could have around <span class="math inline">\(60\)</span> features for our machine learning model. However, let’s start small. Hence, we begin our analysis using a subset of the columns. Also, since in the original data set, there’s only a small percentage of factories that are incorporated, which is because of historical reasons in Late Imperial Russia during 1894 to 1908. For the purpose of this machine learning project, we artificially select a subset of the whole data set so that we have equal number of factories owned by incorporated firms and not incorporated firms alike.</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Rvss.loc[Rvss[<span class="st">'Form'</span>]<span class="op">==</span><span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="10">
 
 <div>
 
@@ -592,7 +613,7 @@ background-size: cover;
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> Rvss[[<span class="st">'id'</span>, <span class="st">'Form'</span>, <span class="st">'FoundingYear'</span>,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Province'</span>, <span class="st">'Region'</span>, <span class="st">'Industry'</span>, <span class="st">'OntheSide'</span>, <span class="st">'Age'</span>, <span class="st">'TaxedActivity'</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">'YEAR'</span>, <span class="st">'SubindustryCode'</span>, <span class="st">'STCAP'</span>, <span class="st">'Revenue'</span>,</span>
@@ -609,48 +630,50 @@ background-size: cover;
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>       <span class="st">'MixedMaterials'</span>, <span class="st">'Wood'</span>, <span class="st">'Paper'</span>, <span class="st">'MetalsandMachines'</span>, <span class="st">'Foods'</span>,</span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Chemical'</span>, <span class="st">'Mineral'</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> FP.create_balanced_data(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>df incorporated have 2393 many rows
 after balancing, df not incorporated have 2393 many rows</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>result[<span class="st">'Form'</span>].mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>0.5</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>compression_opts <span class="op">=</span> <span class="bu">dict</span>(method<span class="op">=</span><span class="st">'zip'</span>, archive_name<span class="op">=</span><span class="st">'artificially_balanced_Rvssian_Factory.csv'</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>result.to_csv(<span class="st">'artificially_balanced_Rvssian_Factory.zip'</span>, index <span class="op">=</span> <span class="va">False</span>, compression<span class="op">=</span>compression_opts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="14">
+<div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>FP <span class="op">=</span> FinalProject()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>train, validate, test <span class="op">=</span> FP.split_data(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="22">
+<div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df_train, X_train, y_train <span class="op">=</span> FP.prepare_data(train)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>df_validate, X_validate, y_validate<span class="op">=</span> FP.prepare_data(validate)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>df_test, X_test, y_test <span class="op">=</span> FP.prepare_data(test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+</section>
+</section>
 <section id="lets-do-some-visualization" class="level1">
 <h1>Let’s do some visualization</h1>
-<div class="cell" data-execution_count="23">
+<div class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sns.lmplot(data<span class="op">=</span>df_train, x<span class="op">=</span><span class="st">"TotalWorkers"</span>, y <span class="op">=</span> <span class="st">"TotalPower"</span>, hue<span class="op">=</span><span class="st">"Form"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7f2279d60640&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7f850057f970&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-20-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="24">
+<div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.lmplot(data<span class="op">=</span>df_train, x<span class="op">=</span><span class="st">"PowerperWorker"</span>, y <span class="op">=</span> <span class="st">"RevperWorker"</span>, hue<span class="op">=</span><span class="st">"Form"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="24">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7f2279d40cd0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7f85002698e0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-21-output-2.png" class="img-fluid"></p>
@@ -660,58 +683,41 @@ after balancing, df not incorporated have 2393 many rows</code></pre>
 <section id="first-we-try-some-feature-engineering" class="level1">
 <h1>First, we try some feature engineering</h1>
 <p>In the basic toolbox of an economist, one is unlikely to find methods of feature engineering, since we believe that economists would rather choose the regressors (features) themselves, becuase regressors are often central to the economic questoin and analysis. However, in this project, we actually going to have a systematic way written in code to select the features, according to which combination of features gives the highest score.</p>
-<div class="cell" data-execution_count="25">
+<div class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>X_train, RegionCoded <span class="op">=</span>   FP.encode_features(X_train, <span class="st">"Region"</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>X_train[<span class="st">'RegionCoded'</span>] <span class="op">=</span> RegionCoded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="26">
+<div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>X_train, IndustryCoded <span class="op">=</span> FP.encode_features(X_train, <span class="st">"Industry"</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>X_train[<span class="st">"IndustryCoded"</span>] <span class="op">=</span> IndustryCoded</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.fillna(<span class="dv">0</span>)</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train.head(10)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="29">
+<div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>X_train, IndustryFactorCoded <span class="op">=</span> FP.encode_features(X_train, <span class="st">'IndustryFactor'</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>X_train[<span class="st">"IndustryFactorCoded"</span>] <span class="op">=</span> IndustryFactorCoded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>Index(['id', 'FoundingYear', 'Province', 'OntheSide', 'Age', 'TaxedActivity',
-       'YEAR', 'SubindustryCode', 'STCAP', 'Revenue', 'TotalWorkers',
-       'TotalPower', 'GrandTotalWorkers', 'RevperWorker', 'PowerperWorker',
-       'RevperGrandWorker', 'PowerperGrandWorker', 'logRevperWorker',
-       'logPowerperWorker', 'logRevperGrandWorker', 'logPowerperGrandWorker',
-       'logRev', 'logWorkers', 'logPower', 'RegIndGroup', 'RegIndYearGroup',
-       'ProvIndGroup', 'ProvIndYearGroup', 'IndYearGroup', 'ProvinceFactor',
-       'YearFactor', 'AKTS', 'PAI', 'factory_id', 'FormNextYear',
-       'FormNextNextYear', 'FactoryisCorpin1894', 'FormNextYearin1894',
-       'FactoryisCorpin1900', 'FormNextYearin1900', 'FactoryisCorpin1908',
-       'NEWDEV', 'SHARES', 'STPRICE', 'BONDS', 'Silk', 'Flax', 'Animal',
-       'Wool', 'Cotton', 'MixedMaterials', 'Wood', 'Paper',
-       'MetalsandMachines', 'Foods', 'Chemical', 'Mineral', 'RegionCoded',
-       'IndustryCoded', 'IndustryFactorCoded'],
-      dtype='object')</code></pre>
-</div>
 </div>
 <div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>FP1 <span class="op">=</span> FinalProject() </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>all_qual_cols <span class="op">=</span> [<span class="st">'RegionCoded'</span>, <span class="st">'IndustryCoded'</span>, <span class="st">"IndustryFactorCoded"</span>] </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>all_quant_cols <span class="op">=</span> [</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Province'</span>, <span class="st">'OntheSide'</span>, <span class="st">'Age'</span>, <span class="st">'TaxedActivity'</span>,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">'YEAR'</span>, <span class="st">'SubindustryCode'</span>, <span class="st">'STCAP'</span>, <span class="st">'Revenue'</span>,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">'TotalWorkers'</span>, <span class="st">'TotalPower'</span>, <span class="st">'GrandTotalWorkers'</span>, <span class="st">'RevperWorker'</span>,</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">'PowerperWorker'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'PowerperGrandWorker'</span>,</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">'logRevperWorker'</span>, <span class="st">'logPowerperWorker'</span>, <span class="st">'logRevperGrandWorker'</span>,</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">'logPowerperGrandWorker'</span>, <span class="st">'logRev'</span>, <span class="st">'logWorkers'</span>, <span class="st">'logPower'</span>,</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>       <span class="st">'RegIndGroup'</span>, <span class="st">'RegIndYearGroup'</span>, <span class="st">'ProvIndGroup'</span>, <span class="st">'ProvIndYearGroup'</span>,</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>       <span class="st">'IndYearGroup'</span>, <span class="st">'ProvinceFactor'</span>, <span class="st">'YearFactor'</span>,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>       <span class="st">'AKTS'</span>, <span class="st">'PAI'</span>, <span class="st">'factory_id'</span>, <span class="st">'FormNextYear'</span>, <span class="st">'FormNextNextYear'</span>,</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>       <span class="st">'FactoryisCorpin1894'</span>, <span class="st">'FormNextYearin1894'</span>, <span class="st">'FactoryisCorpin1900'</span>,</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>       <span class="st">'FormNextYearin1900'</span>, <span class="st">'FactoryisCorpin1908'</span>, <span class="st">'NEWDEV'</span>, <span class="st">'SHARES'</span>,</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>       <span class="st">'STPRICE'</span>, <span class="st">'BONDS'</span>, <span class="st">'Silk'</span>, <span class="st">'Flax'</span>, <span class="st">'Animal'</span>, <span class="st">'Wool'</span>, <span class="st">'Cotton'</span>,</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>       <span class="st">'MixedMaterials'</span>, <span class="st">'Wood'</span>, <span class="st">'Paper'</span>, <span class="st">'MetalsandMachines'</span>, <span class="st">'Foods'</span>,</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Chemical'</span>, <span class="st">'Mineral'</span>]</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>FP1.feature_combo(all_qual_cols, all_quant_cols, X_train, y_train)    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>FP1 <span class="op">=</span> FinalProject() </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>all_qual_cols <span class="op">=</span> [<span class="st">'RegionCoded'</span>, <span class="st">'IndustryCoded'</span>, <span class="st">"IndustryFactorCoded"</span>] </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>all_quant_cols <span class="op">=</span> [</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Province'</span>, <span class="st">'OntheSide'</span>, <span class="st">'Age'</span>, <span class="st">'TaxedActivity'</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">'YEAR'</span>, <span class="st">'SubindustryCode'</span>, <span class="st">'STCAP'</span>, <span class="st">'Revenue'</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">'TotalWorkers'</span>, <span class="st">'TotalPower'</span>, <span class="st">'GrandTotalWorkers'</span>, <span class="st">'RevperWorker'</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">'PowerperWorker'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'PowerperGrandWorker'</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">'logRevperWorker'</span>, <span class="st">'logPowerperWorker'</span>, <span class="st">'logRevperGrandWorker'</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">'logPowerperGrandWorker'</span>, <span class="st">'logRev'</span>, <span class="st">'logWorkers'</span>, <span class="st">'logPower'</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>       <span class="st">'RegIndGroup'</span>, <span class="st">'RegIndYearGroup'</span>, <span class="st">'ProvIndGroup'</span>, <span class="st">'ProvIndYearGroup'</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>       <span class="st">'IndYearGroup'</span>, <span class="st">'ProvinceFactor'</span>, <span class="st">'YearFactor'</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>       <span class="st">'AKTS'</span>, <span class="st">'PAI'</span>, <span class="st">'factory_id'</span>, <span class="st">'FormNextYear'</span>, <span class="st">'FormNextNextYear'</span>,</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>       <span class="st">'FactoryisCorpin1894'</span>, <span class="st">'FormNextYearin1894'</span>, <span class="st">'FactoryisCorpin1900'</span>,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>       <span class="st">'FormNextYearin1900'</span>, <span class="st">'FactoryisCorpin1908'</span>, <span class="st">'NEWDEV'</span>, <span class="st">'SHARES'</span>,</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>       <span class="st">'STPRICE'</span>, <span class="st">'BONDS'</span>, <span class="st">'Silk'</span>, <span class="st">'Flax'</span>, <span class="st">'Animal'</span>, <span class="st">'Wool'</span>, <span class="st">'Cotton'</span>,</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>       <span class="st">'MixedMaterials'</span>, <span class="st">'Wood'</span>, <span class="st">'Paper'</span>, <span class="st">'MetalsandMachines'</span>, <span class="st">'Foods'</span>,</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>       <span class="st">'Chemical'</span>, <span class="st">'Mineral'</span>]</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>FP1.feature_combo(all_qual_cols, all_quant_cols, X_train, y_train)    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:458: ConvergenceWarning: lbfgs failed to converge (status=1):
 STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
@@ -740,18 +746,18 @@ Please also refer to the documentation for alternative solver options:
 </div>
 </div>
 <div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">max</span>(FP1.feature_score_pair, key<span class="op">=</span>FP1.feature_score_pair.get)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">max</span>(FP1.feature_score_pair, key<span class="op">=</span>FP1.feature_score_pair.get)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>('RegionCoded', 'FactoryisCorpin1900', 'NEWDEV')</code></pre>
 </div>
 </div>
 <p>Hence, for fitting logistic regression on the training data, the highest scoring combination of 3 features among the independent variables that we considered is <code>RegionCoded</code>, <code>RevperGrandWorker</code>, <code>logWorkers</code>.</p>
 <div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test for max </span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">max</span>([<span class="op">-</span><span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">3</span>], key<span class="op">=</span><span class="bu">abs</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">max</span>(FP1.feature_score_pair.values()))</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FP1.feature_score_pair[(<span class="st">'RegionCoded'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>)])</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FP1.feature_score_pair[(<span class="st">"RegionCoded"</span>, <span class="st">"FactoryisCorpin1900"</span>, <span class="st">"NEWDEV"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test for max </span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">max</span>([<span class="op">-</span><span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">3</span>], key<span class="op">=</span><span class="bu">abs</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">max</span>(FP1.feature_score_pair.values()))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FP1.feature_score_pair[(<span class="st">'RegionCoded'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>)])</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FP1.feature_score_pair[(<span class="st">"RegionCoded"</span>, <span class="st">"FactoryisCorpin1900"</span>, <span class="st">"NEWDEV"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.9944270289097875
 0.8025078369905956
@@ -766,13 +772,13 @@ Please also refer to the documentation for alternative solver options:
 <h3 class="anchored" data-anchor-id="data-inspection">Data Inspection</h3>
 <p>Since previously we have artificially selected a subset of our entire Russian factory data set so that we have equal number of factories belonging to incorporated firms and not incorporated firms, we expect that our label has roughly <span class="math inline">\(50 \%\)</span> of <span class="math inline">\(1\)</span>’s and <span class="math inline">\(50 \%\)</span> % of <span class="math inline">\(0\)</span>’s.</p>
 <div class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>y_train.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>y_train.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
 <pre><code>0.5019157088122606</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_train.groupby([<span class="st">'Industry'</span>])[[<span class="st">'Form'</span>]].aggregate([np.mean, <span class="bu">len</span>]).<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df_train.groupby([<span class="st">'Industry'</span>])[[<span class="st">'Form'</span>]].aggregate([np.mean, <span class="bu">len</span>]).<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="35">
 
 <div>
@@ -862,7 +868,7 @@ Please also refer to the documentation for alternative solver options:
 </div>
 <p>Hence, it seems that Food industry in Late Imperial Russia had a low incorporation rate, which is around <span class="math inline">\(28.3 \%\)</span>. On the other hand, the Cotton industry had a relatively high incorporation rate, around <span class="math inline">\(81.4 \%\)</span>.</p>
 <div class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df_train.groupby([<span class="st">'Industry'</span>])[[<span class="st">'TotalPower'</span>]].aggregate([np.mean, <span class="bu">len</span>]).<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_train.groupby([<span class="st">'Industry'</span>])[[<span class="st">'TotalPower'</span>]].aggregate([np.mean, <span class="bu">len</span>]).<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="36">
 
 <div>
@@ -957,60 +963,60 @@ Please also refer to the documentation for alternative solver options:
 </ul>
 <p>The ROC curve is especially useful when we want to compare directly the curve of several different models. Also, AUC, which stands for the area under the curve can be used to measure how good a model is.</p>
 <div class="cell" data-execution_count="107">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>important_cols <span class="op">=</span> [<span class="st">'RegionCoded'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>]</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>high_scoring_cols <span class="op">=</span> [<span class="st">"RegionCoded"</span>, <span class="st">"FactoryisCorpin1900"</span>, <span class="st">"NEWDEV"</span>]</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.dropna()</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.drop(["Industry"], axis=1)</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.drop(["Region"], axis=1)</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train.drop(["FoundingYear", "OntheSide", "TaxedActivity", "PSZLastYear", "PSZ1908"], axis=1)</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.fillna(<span class="dv">0</span>)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>y_train.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># cols = ["FactoryisCorpin1900", "NEWDEV"]</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>]</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a model</span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression(solver<span class="op">=</span><span class="st">"newton-cg"</span>) <span class="co"># Newton's Method</span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>LR.fit(X_train[cols], y_train)</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>LR.score(X_train[cols], y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>important_cols <span class="op">=</span> [<span class="st">'RegionCoded'</span>, <span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>high_scoring_cols <span class="op">=</span> [<span class="st">"RegionCoded"</span>, <span class="st">"FactoryisCorpin1900"</span>, <span class="st">"NEWDEV"</span>]</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.dropna()</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.drop(["Industry"], axis=1)</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train = X_train.drop(["Region"], axis=1)</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train.drop(["FoundingYear", "OntheSide", "TaxedActivity", "PSZLastYear", "PSZ1908"], axis=1)</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.fillna(<span class="dv">0</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>y_train.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co"># cols = ["FactoryisCorpin1900", "NEWDEV"]</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'RevperGrandWorker'</span>, <span class="st">'logWorkers'</span>]</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a model</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression(solver<span class="op">=</span><span class="st">"newton-cg"</span>) <span class="co"># Newton's Method</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>LR.fit(X_train[cols], y_train)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>LR.score(X_train[cols], y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="107">
 <pre><code>0.8021595262974573</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="108">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.fillna(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.fillna(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="109">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC curve, receiver operating characteristic</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># TPR true positive rate</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># FPR false positive rate</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># predict the probability</span></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>probability <span class="op">=</span> LR.predict_proba(X_test[cols])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ROC curve, receiver operating characteristic</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># TPR true positive rate</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># FPR false positive rate</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co"># predict the probability</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>probability <span class="op">=</span> LR.predict_proba(X_test[cols])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="110">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the probabilities for the positive outcome</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>proba_positive <span class="op">=</span> probability[:,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the probabilities for the positive outcome</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>proba_positive <span class="op">=</span> probability[:,<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="111">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get a no-skill prediction that always predict the majority class</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>proba_no_skill <span class="op">=</span> [<span class="dv">0</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(y_test))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get a no-skill prediction that always predict the majority class</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>proba_no_skill <span class="op">=</span> [<span class="dv">0</span> <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(y_test))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="120">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the scores</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>auc_no_skill <span class="op">=</span> roc_auc_score(y_test, proba_no_skill) </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>auc_LR <span class="op">=</span> roc_auc_score(y_test, proba_positive)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Always predict zero, which is not incorporate. ROC AUC = </span><span class="sc">{</span>auc_no_skill<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Use Logistic Regression. ROC AUC = </span><span class="sc">{</span>auc_LR<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fpr, tpr, thresholds = roc_curve(y_train, scores, pos_label=2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute the scores</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>auc_no_skill <span class="op">=</span> roc_auc_score(y_test, proba_no_skill) </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>auc_LR <span class="op">=</span> roc_auc_score(y_test, proba_positive)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Always predict zero, which is not incorporate. ROC AUC = </span><span class="sc">{</span>auc_no_skill<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Use Logistic Regression. ROC AUC = </span><span class="sc">{</span>auc_LR<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fpr, tpr, thresholds = roc_curve(y_train, scores, pos_label=2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Always predict zero, which is not incorporate. ROC AUC = 0.5
 Use Logistic Regression. ROC AUC = 0.8655317145883183</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="129">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, LR.predict(X_test[cols]), normalize<span class="op">=</span><span class="st">"true"</span>))</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>FP.print_confusion_matrix(LR, X_test[cols], y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, LR.predict(X_test[cols]), normalize<span class="op">=</span><span class="st">"true"</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>FP.print_confusion_matrix(LR, X_test[cols], y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[0.78197065 0.21802935]
  [0.22037422 0.77962578]]</code></pre>
@@ -1020,30 +1026,30 @@ Use Logistic Regression. ROC AUC = 0.8655317145883183</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="79">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute roc curves</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>fpr_no_skill, tpr_no_skil, _ <span class="op">=</span> roc_curve(y_test, proba_no_skill)</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>fpr_LR, tpr_LR, _ <span class="op">=</span> roc_curve(y_test, proba_positive)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the roc curve for the model</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_no_skill, tpr_no_skil, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"No Skill"</span>)</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_LR, tpr_LR, marker<span class="op">=</span><span class="st">'.'</span>, label<span class="op">=</span><span class="st">'Logistic'</span>)</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co"># axis labels</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive rate'</span>)</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive rate'</span>)</span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># show the legend</span></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="co"># show the plot</span></span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute roc curves</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>fpr_no_skill, tpr_no_skil, _ <span class="op">=</span> roc_curve(y_test, proba_no_skill)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>fpr_LR, tpr_LR, _ <span class="op">=</span> roc_curve(y_test, proba_positive)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the roc curve for the model</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_no_skill, tpr_no_skil, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"No Skill"</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_LR, tpr_LR, marker<span class="op">=</span><span class="st">'.'</span>, label<span class="op">=</span><span class="st">'Logistic'</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># axis labels</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive rate'</span>)</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive rate'</span>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="co"># show the legend</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a><span class="co"># show the plot</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-38-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>We are interested in seeing the coefficients for the regressors in our logistic regression. We see that the coefficient for revenue per worker grand total <code>RevperGrandWorker</code> is <span class="math inline">\(0.000056\)</span>, and the coefficient for <code>logWorkers</code>, the log of the number of workers is <span class="math inline">\(1.048\)</span>. In the cells below, we are also interested in visualizing the decision region of our model. We see that the desion boundary is linear, and since our data are all relatively clustered together, the picture does not really show that our model is doing a fantastic job. It is quite hard to guess how many data points are in the correct region because of it’s quite dense.</p>
 <div class="cell" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column"</span>: X_train[cols].columns,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coefficient"</span>: LR.coef_.ravel()</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"column"</span>: X_train[cols].columns,</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coefficient"</span>: LR.coef_.ravel()</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="80">
 
 <div>
@@ -1072,291 +1078,24 @@ Use Logistic Regression. ROC AUC = 0.8655317145883183</code></pre>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="138">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(X_train[cols])</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>col<span class="op">=</span>[<span class="st">'TotalWorkers'</span>,<span class="st">'TotalPower'</span>]</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>X_test[col].head(<span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="138">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>TotalWorkers</th>
-      <th>TotalPower</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>126</th>
-      <td>318.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3950</th>
-      <td>1931.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2935</th>
-      <td>88.0</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <th>3204</th>
-      <td>167.0</td>
-      <td>9.0</td>
-    </tr>
-    <tr>
-      <th>1347</th>
-      <td>8.0</td>
-      <td>18.0</td>
-    </tr>
-    <tr>
-      <th>3055</th>
-      <td>45.0</td>
-      <td>40.0</td>
-    </tr>
-    <tr>
-      <th>355</th>
-      <td>16.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>4462</th>
-      <td>189.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3531</th>
-      <td>5402.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2730</th>
-      <td>3751.0</td>
-      <td>1215.0</td>
-    </tr>
-    <tr>
-      <th>827</th>
-      <td>1.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>1639</th>
-      <td>777.0</td>
-      <td>187.0</td>
-    </tr>
-    <tr>
-      <th>3694</th>
-      <td>1433.0</td>
-      <td>1331.0</td>
-    </tr>
-    <tr>
-      <th>3040</th>
-      <td>1214.0</td>
-      <td>520.0</td>
-    </tr>
-    <tr>
-      <th>984</th>
-      <td>10.0</td>
-      <td>4.0</td>
-    </tr>
-    <tr>
-      <th>3281</th>
-      <td>8.0</td>
-      <td>39.0</td>
-    </tr>
-    <tr>
-      <th>4758</th>
-      <td>6.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3930</th>
-      <td>148.0</td>
-      <td>6.0</td>
-    </tr>
-    <tr>
-      <th>2188</th>
-      <td>2169.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>4420</th>
-      <td>668.0</td>
-      <td>180.0</td>
-    </tr>
-    <tr>
-      <th>2443</th>
-      <td>15.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>362</th>
-      <td>3170.0</td>
-      <td>1560.0</td>
-    </tr>
-    <tr>
-      <th>2349</th>
-      <td>63.0</td>
-      <td>4.0</td>
-    </tr>
-    <tr>
-      <th>345</th>
-      <td>256.0</td>
-      <td>200.0</td>
-    </tr>
-    <tr>
-      <th>3887</th>
-      <td>53.0</td>
-      <td>125.0</td>
-    </tr>
-    <tr>
-      <th>4416</th>
-      <td>4.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>711</th>
-      <td>4.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3205</th>
-      <td>64.0</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <th>3908</th>
-      <td>55.0</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>4591</th>
-      <td>30.0</td>
-      <td>2.0</td>
-    </tr>
-    <tr>
-      <th>3893</th>
-      <td>25.0</td>
-      <td>15.0</td>
-    </tr>
-    <tr>
-      <th>3325</th>
-      <td>16.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>152.0</td>
-      <td>16.0</td>
-    </tr>
-    <tr>
-      <th>1683</th>
-      <td>173.0</td>
-      <td>80.0</td>
-    </tr>
-    <tr>
-      <th>2116</th>
-      <td>44.0</td>
-      <td>28.0</td>
-    </tr>
-    <tr>
-      <th>4536</th>
-      <td>164.0</td>
-      <td>22.0</td>
-    </tr>
-    <tr>
-      <th>1834</th>
-      <td>628.0</td>
-      <td>475.0</td>
-    </tr>
-    <tr>
-      <th>793</th>
-      <td>11.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3363</th>
-      <td>605.0</td>
-      <td>1000.0</td>
-    </tr>
-    <tr>
-      <th>4733</th>
-      <td>13.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2802</th>
-      <td>171.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2674</th>
-      <td>80.0</td>
-      <td>670.0</td>
-    </tr>
-    <tr>
-      <th>94</th>
-      <td>2746.0</td>
-      <td>646.0</td>
-    </tr>
-    <tr>
-      <th>3903</th>
-      <td>202.0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>129</th>
-      <td>366.0</td>
-      <td>28.0</td>
-    </tr>
-    <tr>
-      <th>3756</th>
-      <td>8.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2891</th>
-      <td>11935.0</td>
-      <td>7240.0</td>
-    </tr>
-    <tr>
-      <th>2371</th>
-      <td>175.0</td>
-      <td>203.0</td>
-    </tr>
-    <tr>
-      <th>2094</th>
-      <td>1950.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3880</th>
-      <td>7.0</td>
-      <td>108.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
+<div class="cell" data-execution_count="71">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(X_train[cols])</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>col<span class="op">=</span>[<span class="st">'TotalWorkers'</span>,<span class="st">'TotalPower'</span>]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># X_test[col].head(50)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="82">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">isinstance</span>(X_train[cols], np.ndarray))</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need to write up the function that make a visual representation</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>value<span class="op">=</span><span class="fl">1.5</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>width<span class="op">=</span><span class="fl">0.75</span></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>plot_decision_regions(X_test[cols].to_numpy(), y_test.to_numpy(), clf<span class="op">=</span>LR</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_values={2:value},</span></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_ranges={2:width}</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                      )</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>mypredict <span class="op">=</span> LR.predict(X_test[cols].to_numpy())</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Accuracy=</span><span class="sc">{</span>(mypredict<span class="op">==</span>y_test)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>                      xlabel<span class="op">=</span><span class="st">"Feature 1"</span>,</span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>                      ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">isinstance</span>(X_train[cols], np.ndarray))</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># need to write up the function that make a visual representation</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>value<span class="op">=</span><span class="fl">1.5</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>width<span class="op">=</span><span class="fl">0.75</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>plot_decision_regions(X_test[cols].to_numpy(), y_test.to_numpy(), clf<span class="op">=</span>LR</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_values={2:value},</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_ranges={2:width}</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>mypredict <span class="op">=</span> LR.predict(X_test[cols].to_numpy())</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Accuracy=</span><span class="sc">{</span>(mypredict<span class="op">==</span>y_test)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>                      xlabel<span class="op">=</span><span class="st">"Feature 1"</span>,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>                      ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>False</code></pre>
 </div>
@@ -1376,138 +1115,64 @@ Use Logistic Regression. ROC AUC = 0.8655317145883183</code></pre>
 </section>
 <section id="use-cross-validation" class="level3">
 <h3 class="anchored" data-anchor-id="use-cross-validation">Use cross validation</h3>
-<div class="cell" data-execution_count="114">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we are unsure if using polynomial features would give our model more predictive power. One way to find out is by trying different degrees of polynomials and score them using cross validation. The idea behind cross validation is as follows: we divide the data into little chunks, and in each regression, one of the chunks is used as validation data set, and all other chunks are used as training data set. Each little chunk takes turn to be used for validation, hence the name cross validation. We could take the average of all those scores and use this average to compare models with different degrees.</p>
-<div class="cell" data-execution_count="92">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poly_LR(deg):</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Pipeline([(<span class="st">"poly"</span>, PolynomialFeatures(degree<span class="op">=</span>deg)),</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>                     (<span class="st">"LR"</span>, LogisticRegression(penalty<span class="op">=</span><span class="st">"none"</span>, max_iter<span class="op">=</span><span class="bu">int</span>(<span class="fl">1e3</span>)))])</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>plr <span class="op">=</span> poly_LR(deg <span class="op">=</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poly_LR(deg):</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Pipeline([(<span class="st">"poly"</span>, PolynomialFeatures(degree<span class="op">=</span>deg)),</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                     (<span class="st">"LR"</span>, LogisticRegression(penalty<span class="op">=</span><span class="st">"none"</span>, max_iter<span class="op">=</span><span class="bu">int</span>(<span class="fl">1e3</span>)))])</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>plr <span class="op">=</span> poly_LR(deg <span class="op">=</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="93">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>cv_scores <span class="op">=</span> cross_val_score(plr, X_train[cols], y_train, cv<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>cv_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="93">
-<pre><code>array([0.5026087 , 0.50174216, 0.50174216, 0.50522648, 0.50522648])</code></pre>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>cv_scores <span class="op">=</span> cross_val_score(plr, X_train[cols], y_train, cv<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>cv_scores</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'cols' is not defined</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="94">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>cv_scores.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="94">
-<pre><code>0.5033091955764278</code></pre>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>cv_scores.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'cv_scores' is not defined</code></pre>
 </div>
 </div>
 <p>Hence, this is telling us that for the features we selected, polynomial logistic regression has roughly the same predictive power as simply guessing whether a factory is belonging to a corporation or not. Degree zero corresponds to the baseline model, and degree 1 corresponds to simple logistic regression without a polynomial feature map.</p>
 <p>In the above code snippets, we defined a model using degree 2 polynomial features, did cross validation by dividing data into 5 chunks, and then we take the mean to get the final score. Now, we put this into a function with a for loop, that will lop through each</p>
-<div class="cell" data-execution_count="118">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>FP.polynomial_degree_validation(X_train[cols], y_train, <span class="dv">4</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Polynomial degree = 0, score = 0.502
-Polynomial degree = 1, score = 0.803
-Polynomial degree = 2, score = 0.503
-Polynomial degree = 3, score = 0.493</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(
-/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(</code></pre>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>FP.polynomial_degree_validation(X_train[cols], y_train, <span class="dv">4</span>, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'cols' is not defined</code></pre>
 </div>
 </div>
 <p>Hence, we see that degree one has the highest score, meaning that we just need simple logistic regression in this case. Since this score comes from cross validation, we could rely on the accuracy of this score to some extent. Now, we use simple logistic regression with no polynomial features to <code>fit</code> our training data once again, and we test on the testing data.</p>
-<div class="cell" data-execution_count="119">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>plr <span class="op">=</span> poly_LR(<span class="dv">1</span>)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>plr.fit(X_train[cols], y_train)</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>plr.score(X_train[cols], y_train)</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.fillna(<span class="dv">0</span>)</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>plr.score(X_test[cols], y_test).<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/linear_model/_logistic.py:1173: FutureWarning: `penalty='none'`has been deprecated in 1.2 and will be removed in 1.4. To keep the past behaviour, set `penalty=None`.
-  warnings.warn(</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="119">
-<pre><code>0.7808</code></pre>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plr <span class="op">=</span> poly_LR(<span class="dv">1</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>plr.fit(X_train[cols], y_train)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>plr.score(X_train[cols], y_train)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.fillna(<span class="dv">0</span>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>plr.score(X_test[cols], y_test).<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'cols' is not defined</code></pre>
 </div>
 </div>
 <p>We get a score of <span class="math inline">\(0.78\)</span>, which is not bad! Also, let us print out the classification report for our model. Again, our precision score is not bad!</p>
-<div class="cell" data-execution_count="123">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> plr.predict(X_test[cols])</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_predict))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              precision    recall  f1-score   support
-
-           0       0.78      0.78      0.78       477
-           1       0.78      0.78      0.78       481
-
-    accuracy                           0.78       958
-   macro avg       0.78      0.78      0.78       958
-weighted avg       0.78      0.78      0.78       958
-</code></pre>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> plr.predict(X_test[cols])</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_predict))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'cols' is not defined</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="122">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_predict))</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_predict, normalize <span class="op">=</span> <span class="st">"true"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[373 104]
- [106 375]]
-[[0.78197065 0.21802935]
- [0.22037422 0.77962578]]</code></pre>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_predict))</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_predict, normalize <span class="op">=</span> <span class="st">"true"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'y_predict' is not defined</code></pre>
 </div>
 </div>
 <p>Recall that the confusion matrix is organized as follows, so we could read the data right off the matrix. <span class="math display">\[
@@ -1517,47 +1182,180 @@ weighted avg       0.78      0.78      0.78       958
 \end{matrix}
 \]</span> In our case, we have <span class="math inline">\(373\)</span> true positives and <span class="math inline">\(375\)</span> true negatives for our test data, and <span class="math inline">\(104\)</span> false positives and <span class="math inline">\(106\)</span> false negatives. This is quite evenly distributed, our model does not give more false positives than false negatives or the other way round. Hence, our model’s prediction is not biased towards positive or negative. Also, by specifying <code>normalize = "true"</code>, we could get the True Positive Rate (TPR), False Positive Rate (FPR), and so on. Feel free to check the definition given above earlier.</p>
 <p>Now, let’s find out the mean machine power per worker for our testing set <code>X_test</code>, which is <span class="math inline">\(0.6991\)</span>. Now, we would like to filter our test data <code>X_test</code> and only keep the entries that have more than average power per worker. Then we print out our compusion matrix again just for those entries with more than average machine power per worker. We are interested to see if our model is biased or not, in the sense that it might give more False Positives than False Negatives, or the other way round.</p>
-<div class="cell" data-execution_count="99">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>X_test[<span class="st">"PowerperWorker"</span>].mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="99">
-<pre><code>0.699119351282881</code></pre>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>X_test[<span class="st">"PowerperWorker"</span>].mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>1.0800762835955882</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="124">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> X_test[<span class="st">"PowerperWorker"</span>] <span class="op">&gt;</span> <span class="fl">0.63483127</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Factories with more power per worker than average"</span>)</span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The percentage our prediction is correct: </span><span class="sc">{</span>(y_test[ix] <span class="op">==</span> y_predict[ix])<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>confusion_matrix(y_test[ix], y_predict[ix])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> X_test[<span class="st">"PowerperWorker"</span>] <span class="op">&gt;</span> <span class="fl">0.63483127</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Factories with more power per worker than average"</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The percentage our prediction is correct: </span><span class="sc">{</span>(y_test[ix] <span class="op">==</span> y_predict[ix])<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>confusion_matrix(y_test[ix], y_predict[ix])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Factories with more power per worker than average
-The percentage our prediction is correct: 0.8144796380090498</code></pre>
+<pre><code>Factories with more power per worker than average</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="124">
-<pre><code>array([[82, 17],
-       [24, 98]])</code></pre>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'y_predict' is not defined</code></pre>
 </div>
 </div>
 <p>We see that our model has predicted false negative for <span class="math inline">\(24\)</span> cases, and false positive for <span class="math inline">\(17\)</span> cases for factories with more power per worker than average. Hence, in this case, our model is slightly biased towards false negative, predicting the factory is not incorporated (negative) when the factory is actually incorporated (positive). This makes economic sense, since we have selected only factories with above average machine power, and since factories with more machine power stood to gain more investment and capital if they incorporate, they were more likely to incorporate than average, so our model, which is trained on all the entries in <code>X_train</code>, has predicted more false negatives for factories with more power, and this fits our economic intuition.</p>
-<div class="cell" data-execution_count="127">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> X_test[<span class="st">"PowerperWorker"</span>] <span class="op">&lt;</span> <span class="fl">0.63483127</span></span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Factories with less power per worker than average"</span>)</span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The percentage our prediction matches the actual label: </span><span class="sc">{</span>(y_test[ix] <span class="op">==</span> y_predict[ix])<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test[ix], y_predict[ix]))</span>
-<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test[ix], y_predict[ix], normalize<span class="op">=</span><span class="st">"true"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> X_test[<span class="st">"PowerperWorker"</span>] <span class="op">&lt;</span> <span class="fl">0.63483127</span></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Factories with less power per worker than average"</span>)</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The percentage our prediction matches the actual label: </span><span class="sc">{</span>(y_test[ix] <span class="op">==</span> y_predict[ix])<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test[ix], y_predict[ix]))</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_test[ix], y_predict[ix], normalize<span class="op">=</span><span class="st">"true"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Factories with less power per worker than average
-The percentage our prediction matches the actual label: 0.7706919945725916
-[[291  87]
- [ 82 277]]
-[[0.76984127 0.23015873]
- [0.22841226 0.77158774]]</code></pre>
+<pre><code>Factories with less power per worker than average</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'y_predict' is not defined</code></pre>
 </div>
 </div>
 <p>We do the exact same thing for restricting our data set to only factories with less machine power per worker than average. The situation is exactly flipped, since we have more false positive than false negative. Our model tend to predict incorporated when the factory was not incorporated. This is consistent with our findings earlier, since we are in the exact flip case, where we restrict to factories with less machine power, and those are factories that potentially benefit less from the access to more captial and credit brought by incorporation, since they are not perticularly machine intensive. Hence, they had a slightly lower probability to incorporate.</p>
-
-
 </section>
+</section>
+<section id="logistic-regression-implementing-newtons-method" class="level1">
+<h1>Logistic regression implementing Newton’s Method</h1>
+<div class="cell" data-execution_count="105">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'PowerperWorker'</span>, <span class="st">'RevperGrandWorker'</span>]</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>cols<span class="op">=</span>[<span class="st">'TotalWorkers'</span>,<span class="st">'TotalPower'</span>]</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'logWorkers'</span>, <span class="st">'logPower'</span>]</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.fillna(<span class="dv">0</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_train[cols].shape)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>beta_old <span class="op">=</span> np.ones((X_train[cols].shape[<span class="dv">1</span>],<span class="dv">1</span>))</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(beta_old.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(2871, 2)
+(2, 1)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="93">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># y_train = y_train.to_numpy()</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_train.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(2871, 1)</code></pre>
+</div>
+</div>
+</section>
+<section id="moment-of-truth" class="level1">
+<h1>Moment of Truth</h1>
+<div class="cell" data-execution_count="106">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>FP.regress(y_train, X_train[cols], beta_old )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="107">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>FP.beta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="107">
+<pre><code>array([[   1.38095048,  -18.13745557,    1.38095048, ...,    1.38095048,
+         -18.13745557,    1.38095048],
+       [   1.17353846, -202.70596159,    1.17353846, ...,    1.17353846,
+        -202.70596159,    1.17353846]])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="96">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>Reg <span class="op">=</span> LogisticRegression(tol <span class="op">=</span> <span class="fl">0.01</span>, solver<span class="op">=</span><span class="st">'newton-cg'</span>).fit(X_train[cols], y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/utils/validation.py:1143: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="97">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the coefficients are: </span><span class="sc">{</span>Reg<span class="sc">.</span>coef_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the intercept is: </span><span class="sc">{</span>Reg<span class="sc">.</span>intercept_<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>the coefficients are: [[1.05885484 0.08455992]]
+the intercept is: [-4.5901754]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="98">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_test[cols].to_numpy().shape)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(FP.predict(X_test[cols].to_numpy()).shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(958, 2)
+(958, 1)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="108">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>plot_decision_regions(X_train[cols].to_numpy(), y_train, clf<span class="op">=</span>FP</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_values={2:value},</span></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_ranges={2:width}</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>mypredict <span class="op">=</span> FP.predict(X_train[cols].to_numpy())</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Accuracy=</span><span class="sc">{</span>(mypredict<span class="op">==</span>y_train)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>                      xlabel<span class="op">=</span><span class="st">"Feature 1"</span>,</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>                      ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="99">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>plot_decision_regions(X_train[cols].to_numpy(), y_train, clf<span class="op">=</span>FP</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_values={2:value},</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_ranges={2:width}</span></span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>mypredict <span class="op">=</span> FP.predict(X_train[cols].to_numpy())</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Accuracy=</span><span class="sc">{</span>(mypredict<span class="op">==</span>y_train)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>                      xlabel<span class="op">=</span><span class="st">"Feature 1"</span>,</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>                      ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-62-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="100">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="co"># gradient</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> X_test[cols].to_numpy()[:,<span class="dv">0</span>]</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>fig, axarr <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharex <span class="op">=</span> <span class="va">True</span>, sharey <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>axarr[<span class="dv">0</span>].scatter(X_test[cols].to_numpy()[:,<span class="dv">0</span>], y_test.to_numpy())</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a><span class="co"># axarr[0].plot(x, x@FP.beta, color = "black")</span></span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Analytic </span></span>
+<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a><span class="co"># LR2 = LinearRegression()</span></span>
+<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a><span class="co"># X_ = LR2.pad(x)</span></span>
+<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a><span class="co"># LR2.fit_analytic(X_,y)</span></span>
+<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a><span class="co"># axarr[1].scatter(x,y)</span></span>
+<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a><span class="co"># axarr[1].plot(x, X_@LR2.w, color = "black")</span></span>
+<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>labs <span class="op">=</span> axarr[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Best-fit-line by implementing gradient descent"</span>, xlabel <span class="op">=</span> <span class="st">"Feature (x)"</span>, ylabel <span class="op">=</span> <span class="st">"Target (y)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-63-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="101">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">isinstance</span>(X_test[cols], np.ndarray))</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.fillna(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="102">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>value<span class="op">=</span><span class="fl">1.5</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>width<span class="op">=</span><span class="fl">0.75</span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>plot_decision_regions(X_train[cols].to_numpy(), y_train, clf<span class="op">=</span>Reg</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_values={2:value},</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#   filler_feature_ranges={2:width}</span></span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>mypredict <span class="op">=</span> Reg.predict(X_train[cols].to_numpy())</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f"Accuracy=</span><span class="sc">{</span>(mypredict<span class="op">==</span>y_train)<span class="sc">.</span>mean()<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>                      xlabel<span class="op">=</span><span class="st">"Feature 1"</span>,</span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>                      ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/base.py:439: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/home/xianzhiwang/miniforge3/envs/ml-0451/lib/python3.9/site-packages/sklearn/base.py:439: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-65-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

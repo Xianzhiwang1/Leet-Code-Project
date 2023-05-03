@@ -19,10 +19,18 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 
 class FinalProject:
-    def __init__(self):
+
+    def __init__(self, kernel, **kernel_kwargs):
+        self.kernel = kernel
+        self.kernel_kwargs = kernel_kwargs
         self.qual_cols = None
         self.feature_score_pair = dict()
         self.beta = None
+
+    def predict(self, X):
+        innerProd = X @ self.beta
+        y_hat = 1 * (innerProd > 50)
+        return y_hat
 
 
 
@@ -195,6 +203,8 @@ Logistic Regression and Newton Raphson
             if np.any(np.abs(beta_old - self.beta)<tol):
                 converged = True
             iter_count += 1
+
+        self.beta = self.beta.to_numpy()
 
 
     
