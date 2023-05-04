@@ -24,6 +24,7 @@ class FinalProject:
         self.qual_cols = None
         self.feature_score_pair = dict()
         self.beta = None
+        self.mypredict = None
 
     def try_to_plot_decision_regioin(self, X_train, y_train, cols):
         clf = SVC(C=100,gamma=0.0001)
@@ -151,7 +152,7 @@ class FinalProject:
     '''
 Logistic Regression and Newton Raphson 
     '''
-class NR():
+class Newton_Raphson():
     def __init__(self, *kernel, **kernel_kwargs):
         self.kernel = kernel
         self.kernel_kwargs = kernel_kwargs
@@ -197,17 +198,29 @@ class NR():
     def regress(self, y, X, beta_old, max_iters = 200, tol=0.01, converged=False):
         iter_count = 0 
         while not converged and (iter_count<max_iters):
+            iter_count += 1
             self.beta = self.update(y, X, beta_old)
             if np.any(np.abs(beta_old - self.beta)<tol):
                 converged = True
-            iter_count += 1
 
-        self.beta = self.beta.to_numpy()
+        # self.beta = self.beta.to_numpy()
 
     def predict(self, X):
         innerProd = X @ self.beta
         y_hat = 1 * (innerProd > 50)
         return y_hat
+
+    def simple_plot(self, model, X,y):
+        plot_decision_regions(X, y, clf=model)
+        self.mypredict = model.predict(X)
+        title = plt.gca().set(title=f"Accuracy={(self.mypredict==y).mean()} using {model}",
+                            xlabel="Feature 1",
+                            ylabel="Feature 2")
+
+
+
+
+
 
 
     
