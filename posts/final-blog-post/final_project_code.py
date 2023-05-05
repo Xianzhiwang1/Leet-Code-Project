@@ -156,6 +156,9 @@ class Newton_Raphson():
     def __init__(self, *kernel, **kernel_kwargs):
         self.kernel = kernel
         self.kernel_kwargs = kernel_kwargs
+        self.beta_old = np.array([-5.49836039e-02,  6.80093332e-05])
+        self.beta = np.array([-5.49836430e-02,  6.80093567e-05]) 
+
     def sigmoid(self, x: np.array):
         return 1/(1+np.exp(-x))
 
@@ -192,16 +195,27 @@ class Newton_Raphson():
         print(self.prob(X,beta).shape)
         '''
         grad = X.T @ (y-self.prob(X,beta))
-        beta = beta + np.linalg.inv(self.Hessian(X,beta)) @ grad 
+        step = np.linalg.inv(self.Hessian(X,beta)) @ grad
+        print(f"step: {step.shape}")
+        beta = beta + step 
         return beta
 
-    def regress(self, y, X, beta_old, max_iters = 200, tol=0.01, converged=False):
+    def regress(self, y, X, max_iters = 1e8, tol=1e-8, converged=False):
+        self.beta = self.beta.reshape(-1,1)
+        self.beta_old = self.beta_old.reshape(-1,1)
+        
         iter_count = 0 
         while not converged and (iter_count<max_iters):
             iter_count += 1
-            self.beta = self.update(y, X, beta_old)
-            if np.any(np.abs(beta_old - self.beta)<tol):
+            # print(f"self.beta {self.beta.shape}")
+            # print(f"self.beta_old {self.beta_old.shape}")
+
+            self.beta = self.update(y, X, self.beta)
+
+            if np.any(np.abs(self.beta_old - self.beta)<tol):
                 converged = True
+            self.beta_old = self.beta
+
 
         # self.beta = self.beta.to_numpy()
 
@@ -214,6 +228,7 @@ class Newton_Raphson():
         plot_decision_regions(X, y, clf=model)
         self.mypredict = model.predict(X)
         title = plt.gca().set(title=f"Accuracy={(self.mypredict==y).mean()} using {model}",
+        # title = plt.gca().set(title=f"Accuracy using {model}",
                             xlabel="Feature 1",
                             ylabel="Feature 2")
 
