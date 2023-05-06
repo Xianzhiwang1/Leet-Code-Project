@@ -114,31 +114,60 @@ class Newton_Raphson():
     def predict(self, X):
         X = self.patek(X)
         innerProd = X @ self.beta
-        y_hat = 1 * (innerProd > 50)
+        y_hat = 1 * (innerProd > 0)
         return y_hat
 
-    def simple_plot(self, model, X,y):
+    def score(self,X,y):
+        y = y.reshape(-1)
+        mypredict = self.predict(X)
+        mypredict = mypredict.reshape(-1)
+        myscore = 1 * (mypredict == y) 
+        return myscore.mean()
+
+    def simple_plot(self, model, X, y, size_1, size_2):
+        plt.rcParams["figure.figsize"] = (size_1,size_2)
         plot_decision_regions(X, y, clf=model)
         self.mypredict = model.predict(X)
-        title = plt.gca().set(title=f"Accuracy={(self.mypredict==y).mean()} using {model}",
+        score = (self.mypredict==y).mean()
+        title = plt.gca().set(title=f"Accuracy={round(score,3)} using {model}",
         # title = plt.gca().set(title=f"Accuracy using {model}",
                             xlabel="Feature 1",
                             ylabel="Feature 2")
 
-    def bare_bone_plot(self, X, y):
+    def bare_bone_plot(self, X, y, size_1, size_2):
+        plt.rcParams["figure.figsize"] = (size_1,size_2)
         mypredict = self.predict(X)
+        score = (mypredict == y).mean()
         print(f"the weight beta is: {self.beta}")
         a_0 = self.beta[0][0]
         a_1 = self.beta[1][0]
         a_2 = self.beta[2][0]
-        plt.rcParams["figure.figsize"] = (10,10)
         fig = plt.scatter(X[:,0], X[:,1], c = y)
         xlab = plt.xlabel("Feature 1")
         ylab = plt.ylabel("Feature 2")
         f1 = np.linspace(3.5, 4.5, 501)
         p = plt.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
-        title = plt.gca().set_title(f"score is: {(mypredict == y).mean()}")
+        title = plt.gca().set_title(f"score is: {round(score,3)}")
 
+
+    def helper_plot(self, X, y, subplot, label):
+        score = self.score(X,y) 
+        a_0 = self.beta[0][0]
+        a_1 = self.beta[1][0]
+        a_2 = self.beta[2][0]
+        fig = subplot.scatter(X[:,0], X[:,1], c = y)
+        subplot.set(xlabel="Feature 1", ylabel="Feature 2", title=f"score: {round(score, 3)} using {label} data")
+        # the line
+        f1 = np.linspace(3.5, 4.5, 501)
+        p = subplot.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
+
+    def big_plot(self, X_train, y_train, X_validate, y_validate, X_test, y_test, size_1, size_2):
+        plt.rcParams["figure.figsize"] = (size_1,size_2)
+        fig, axarr = plt.subplots(1,3)
+        self.helper_plot(X_train, y_train, axarr[0], "training")
+        self.helper_plot(X_validate, y_validate, axarr[1], "validation")
+        self.helper_plot(X_test, y_test, axarr[2], "testing")
+        plt.tight_layout()
 
 
 

@@ -76,6 +76,7 @@ class plot_stuff():
             
             plt.tight_layout()
 
+    # from internet
     # decision surface for logistic regression on a binary classification dataset
     def draw(self, X, y, yhat):
         # generate dataset

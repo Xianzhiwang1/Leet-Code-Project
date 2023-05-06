@@ -51,16 +51,17 @@ class FinalProject:
         Rvss_data.to_csv("AG_Corp_Prod_DataBase.csv")
 
 
-    def preparing_data(self, df):
-        # le.fit(df["Species"])
-        # df = df.drop(["studyName", "Sample Number", "Individual ID", "Date Egg", "Comments", "Region"], axis = 1)
-        # df = df[df["Sex"] != "."]
-        # df = df.dropna()
-        # y = le.transform(df["Species"])
-        # df = df.drop(["Species"], axis = 1)
-        # df = pd.get_dummies(df)
-        # return df, y
-        pass
+
+    def make_ready_for_regression(self, X, y, cols):
+        # X
+        X = X[cols]
+        X = X.fillna(0)
+        X = X.to_numpy()
+        # y 
+        y = y.fillna(0)
+        y = y.to_numpy()
+        y = y.reshape(-1,1)
+        return X,y
 
     def create_balanced_data(self, df) -> pd.DataFrame:
         df_inc = df.loc[df['Form'] == 1]
@@ -148,6 +149,16 @@ class FinalProject:
             print(f"Polynomial degree = {deg}, score = {mean_score.round(3)}")
 
 
+    def preparing_data(self, df):
+        # le.fit(df["Species"])
+        # df = df.drop(["studyName", "Sample Number", "Individual ID", "Date Egg", "Comments", "Region"], axis = 1)
+        # df = df[df["Sex"] != "."]
+        # df = df.dropna()
+        # y = le.transform(df["Species"])
+        # df = df.drop(["Species"], axis = 1)
+        # df = pd.get_dummies(df)
+        # return df, y
+        pass
 
 
 
