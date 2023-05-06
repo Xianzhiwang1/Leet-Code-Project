@@ -26,8 +26,8 @@ class Newton_Raphson():
     def __init__(self, *kernel, **kernel_kwargs):
         self.kernel = kernel
         self.kernel_kwargs = kernel_kwargs
-        self.beta_old = np.array([-5.49836039e-02,  6.80093332e-05])
-        self.beta = np.array([1.01422606, 0.07874342])
+        self.beta_old = np.random.rand(3,1)
+        self.beta = np.random.rand(3,1)
         self.alpha = 0.5   
         self.reg = True
 
@@ -68,13 +68,13 @@ class Newton_Raphson():
         print(self.prob(X,beta).shape)
         '''
         grad = X.T @ (y-self.prob(X,beta))
-        # no reguliazation
-        if (self.reg):
-            hessian = self.Hessian(X,beta)
-            step = np.linalg.inv(self.Hessian(X,beta)) @ grad
         # reguliazation
-        else:
+        if (self.reg):
             hessian = self.Hessian(X,beta) + np.eye(beta.shape[0])
+            step = np.linalg.inv(hessian) @ grad
+        # no reguliazation
+        else:
+            hessian = self.Hessian(X,beta)
             step = np.linalg.inv(hessian) @ grad
         # print(f"step: {step.shape}")
         step = self.alpha * step
@@ -82,11 +82,14 @@ class Newton_Raphson():
         return beta
 
     def regress(self, y, X, max_iters = 1e1, tol=1e-8, converged=False):
-        self.beta_old = np.array([1,1])
-        self.beta = np.array([-5.4e-02,  6.8e-05]) 
+        X = self.patek(X)
+        self.beta_old = np.ones((X.shape[1],1))
+        # self.beta = np.array([-5.4e-02,  6.8e-02, 2.3e-2]) 
+        self.beta = np.random.rand(X.shape[1],1)
         self.beta = self.beta.reshape(-1,1)
         self.beta_old = self.beta_old.reshape(-1,1)
-        print(self.alpha)
+        print(f"learning rate is: {self.alpha}")
+        print(f"Regularization is: {self.reg}")
         
         iter_count = 0 
         while not converged and (iter_count<max_iters):
@@ -95,17 +98,21 @@ class Newton_Raphson():
             # print(f"self.beta_old {self.beta_old.shape}")
 
             self.beta = self.update(y, X, self.beta)
-            print(f"number of iteration: {iter_count}")
-            print(f"beta: {self.beta}")
+            if (iter_count % 10 == 0):
+                print(f"number of iteration: {iter_count}")
+                print(f"beta: {self.beta}")
 
             if not np.any(np.abs(self.beta_old - self.beta)>tol):
                 converged = True
+                print(f"Converged with {iter_count} iterations")
+                print(f"The beta we end up with is: {self.beta}")
             self.beta_old = self.beta
 
 
         # self.beta = self.beta.to_numpy()
 
     def predict(self, X):
+        X = self.patek(X)
         innerProd = X @ self.beta
         y_hat = 1 * (innerProd > 50)
         return y_hat
@@ -117,6 +124,29 @@ class Newton_Raphson():
         # title = plt.gca().set(title=f"Accuracy using {model}",
                             xlabel="Feature 1",
                             ylabel="Feature 2")
+
+    def bare_bone_plot(self, X, y):
+        mypredict = self.predict(X)
+        print(f"the weight beta is: {self.beta}")
+        a_0 = self.beta[0][0]
+        a_1 = self.beta[1][0]
+        a_2 = self.beta[2][0]
+        plt.rcParams["figure.figsize"] = (10,10)
+        fig = plt.scatter(X[:,0], X[:,1], c = y)
+        xlab = plt.xlabel("Feature 1")
+        ylab = plt.ylabel("Feature 2")
+        f1 = np.linspace(3.5, 4.5, 501)
+        p = plt.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
+        title = plt.gca().set_title(f"score is: {(mypredict == y).mean()}")
+
+
+
+
+    def patek(self, X: np.array) -> np.array:
+        '''
+        Certified pre-owned patek function for padding
+        '''
+        return np.append(X, np.ones((X.shape[0],1)), 1)
 
 
 
