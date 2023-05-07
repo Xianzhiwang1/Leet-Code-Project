@@ -36,13 +36,16 @@ class Newton_Raphson():
 
     def prob(self, X: np.array, beta: np.array):
         '''
-        probability
+        prob stands for probability
         '''
         return np.array(self.sigmoid(X.dot(beta)))
         # return self.sigmoid(X.T @ beta)
         # return self.sigmoid(X @ beta)
 
     def Var(self, p: np.array):
+        '''
+        Var stands for Variance 
+        '''
         on_diag = p*(1-p)
         d = on_diag.reshape(-1)
         return np.diag(d)
@@ -148,9 +151,13 @@ class Newton_Raphson():
         f1 = np.linspace(3.5, 4.5, 501)
         p = plt.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
         title = plt.gca().set_title(f"score is: {round(score,3)}")
+    
 
 
     def helper_plot(self, X, y, subplot, label):
+        '''
+        Helper method for big_plot
+        '''
         score = self.score(X,y) 
         a_0 = self.beta[0][0]
         a_1 = self.beta[1][0]
@@ -173,7 +180,7 @@ class Newton_Raphson():
 
     def patek(self, X: np.array) -> np.array:
         '''
-        Certified pre-owned patek function for padding
+        Certified pre-owned bust-down patek function for padding
         '''
         return np.append(X, np.ones((X.shape[0],1)), 1)
 
