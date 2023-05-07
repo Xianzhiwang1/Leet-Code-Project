@@ -3,8 +3,9 @@ Group members: Prateek, Xianzhi
 # data source:
 Factory Productivity and the Concession System of Incorporation in Late Imperial Russia, 1894 - 1908. Replication data set package by Amanda G. Gregg.
 (here)[https://www.aeaweb.org/articles?id=10.1257/aer.20151656] is the url, hosted on American Economic Association.
-### Source for some background reading on Logistic Regression 
-(here)[https://statacumen.com/teach/SC1/SC1_11_LogisticRegression.pdf] is the url.
+### Source for some background reading on Logistic Regression and Support Vector Machine (SVM)
+(here)[https://statacumen.com/teach/SC1/SC1_11_LogisticRegression.pdf] is the url for some background reading on Logistic Regression.
+(here)[https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote14.html] is the url for some background reading on SVM.
 # Prompt: Predicting which factory was incorporated, i.e., owned by an incorporated firm in the historical setting of Late Imperial Russia during 1894 to 1908
 # Our Project Proposal
 
