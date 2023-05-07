@@ -6,6 +6,7 @@ Factory Productivity and the Concession System of Incorporation in Late Imperial
 ### Source for some background reading on Logistic Regression and Support Vector Machine (SVM)
 (here)[https://statacumen.com/teach/SC1/SC1_11_LogisticRegression.pdf] is the url for some background reading on Logistic Regression.
 (here)[https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote14.html] is the url for some background reading on SVM.
+(here)[https://see.stanford.edu/materials/aimlcs229/cs229-notes3.pdf] additional source on SVM for applying gradient descent.
 # Prompt: Predicting which factory was incorporated, i.e., owned by an incorporated firm in the historical setting of Late Imperial Russia during 1894 to 1908
 # Our Project Proposal
 
