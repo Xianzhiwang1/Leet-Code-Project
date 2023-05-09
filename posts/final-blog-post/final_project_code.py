@@ -74,6 +74,16 @@ class FinalProject:
         result = result.sample(frac=1).reset_index(drop=True)
         return result
         
+    def balanced_one_minus_one(self, df) -> pd.DataFrame:
+        df_inc = df.loc[df['Form'] == 1]
+        df_not_inc = df.loc[df['Form'] == -1]
+        print(f"df incorporated have {df_inc.shape[0]} many rows")
+        df_not_inc = df_not_inc.sample(n=2393, replace=False)
+        print(f"after balancing, df not incorporated have {df_not_inc.shape[0]} many rows")
+        frames = [df_inc, df_not_inc]
+        result = pd.concat(frames)
+        result = result.sample(frac=1).reset_index(drop=True)
+        return result
 
     def plot_regions(self, model, X, y):
         pass
