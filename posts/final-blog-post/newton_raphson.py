@@ -128,15 +128,15 @@ class Newton_Raphson():
         myscore = 1 * (mypredict == y) 
         return myscore.mean()
 
-    def simple_plot(self, model, X, y, size_1, size_2):
-        plt.rcParams["figure.figsize"] = (size_1,size_2)
+    def simple_plot(self, model, X, y, F1,F2):
+        y = y.reshape(-1)
         plot_decision_regions(X, y, clf=model)
         self.mypredict = model.predict(X)
         score = (self.mypredict==y).mean()
         title = plt.gca().set(title=f"Accuracy={round(score,3)} using {model}",
         # title = plt.gca().set(title=f"Accuracy using {model}",
-                            xlabel="Feature 1",
-                            ylabel="Feature 2")
+                            xlabel=F1,
+                            ylabel=F2)
 
     def bare_bone_plot(self, X, y, size_1, size_2):
         plt.rcParams["figure.figsize"] = (size_1,size_2)
@@ -166,7 +166,7 @@ class Newton_Raphson():
         fig = subplot.scatter(X[:,0], X[:,1], c = y)
         subplot.set(xlabel=F1, ylabel=F2, title=f"score: {round(score, 3)} using {label} data")
         # the line
-        f1 = np.linspace(3.5, 4.5, 501)
+        f1 = np.linspace(3.5, 14.5, 501)
         p = subplot.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
 
     def big_plot(self, X_train, y_train, X_validate, y_validate, X_test, y_test, size_1, size_2, F1, F2):
