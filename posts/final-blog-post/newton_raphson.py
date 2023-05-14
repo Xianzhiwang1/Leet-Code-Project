@@ -11,6 +11,7 @@ from itertools import combinations
 from sklearn.linear_model import LogisticRegression
 le = LabelEncoder()
 
+
 # for plotting decision region
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
@@ -91,8 +92,8 @@ class Newton_Raphson():
         self.beta = np.random.rand(X.shape[1],1)
         self.beta = self.beta.reshape(-1,1)
         self.beta_old = self.beta_old.reshape(-1,1)
-        print(f"learning rate is: {self.alpha}")
-        print(f"Regularization is: {self.reg}")
+        # print(f"learning rate is: {self.alpha}")
+        # print(f"Regularization is: {self.reg}")
         
         iter_count = 0 
         while not converged and (iter_count<max_iters):
@@ -103,7 +104,7 @@ class Newton_Raphson():
             self.beta = self.update(y, X, self.beta)
             if (iter_count % 10 == 0):
                 print(f"number of iteration: {iter_count}")
-                print(f"beta: {self.beta}")
+                # print(f"beta: {self.beta}")
 
             if not np.any(np.abs(self.beta_old - self.beta)>tol):
                 converged = True
@@ -154,7 +155,7 @@ class Newton_Raphson():
     
 
 
-    def helper_plot(self, X, y, subplot, label):
+    def helper_plot(self, X, y, subplot, label, F1,F2):
         '''
         Helper method for big_plot
         '''
@@ -163,17 +164,17 @@ class Newton_Raphson():
         a_1 = self.beta[1][0]
         a_2 = self.beta[2][0]
         fig = subplot.scatter(X[:,0], X[:,1], c = y)
-        subplot.set(xlabel="Feature 1", ylabel="Feature 2", title=f"score: {round(score, 3)} using {label} data")
+        subplot.set(xlabel=F1, ylabel=F2, title=f"score: {round(score, 3)} using {label} data")
         # the line
         f1 = np.linspace(3.5, 4.5, 501)
         p = subplot.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
 
-    def big_plot(self, X_train, y_train, X_validate, y_validate, X_test, y_test, size_1, size_2):
+    def big_plot(self, X_train, y_train, X_validate, y_validate, X_test, y_test, size_1, size_2, F1, F2):
         plt.rcParams["figure.figsize"] = (size_1,size_2)
         fig, axarr = plt.subplots(1,3)
-        self.helper_plot(X_train, y_train, axarr[0], "training")
-        self.helper_plot(X_validate, y_validate, axarr[1], "validation")
-        self.helper_plot(X_test, y_test, axarr[2], "testing")
+        self.helper_plot(X_train, y_train, axarr[0], "training", F1, F2)
+        self.helper_plot(X_validate, y_validate, axarr[1], "validation", F1, F2)
+        self.helper_plot(X_test, y_test, axarr[2], "testing", F1, F2)
         plt.tight_layout()
 
 

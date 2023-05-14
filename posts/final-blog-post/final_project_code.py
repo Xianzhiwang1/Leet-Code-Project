@@ -20,6 +20,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 
+
 class FinalProject:
 
     def __init__(self) -> None:
