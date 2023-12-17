@@ -3,24 +3,19 @@ project:
   output-dir: docs
 
 website:
-  title: "Our CSCI 0451 Final Project"
+  title: "Quarto Basics"
   navbar:
     background: "#112a39"
     right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
+      - text: "Home"
+        file: index.qmd
+      - about.qmd 
+
 
 format:
   html:
     title-block-banner: img/landscape.png
-    title-block-banner-color: white
     theme: cosmo
     css: styles.css
-
-
-
 
 

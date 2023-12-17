@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-99.9.9">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Our CSCI 0451 Final Project - My Awesome CSCI 0451 Blog</title>
+<title>Quarto Basics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -57,7 +57,8 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -90,13 +91,14 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 <style>
-    .quarto-title-block .quarto-title-banner {
-      color: white;
-background-image: url(img/landscape.png);
-background-size: cover;
-    }
-    </style>
 
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(img/landscape.png);
+background-size: cover;
+      }
+</style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
@@ -110,29 +112,26 @@ background-size: cover;
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Our CSCI 0451 Final Project</span>
+    <span class="navbar-title">Quarto Basics</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">About</a>
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
-</i> 
- </a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
-</i> 
- </a>
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -141,7 +140,7 @@ background-size: cover;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page-left">
-      <h1 class="title">My Awesome CSCI 0451 Blog</h1>
+      <h1 class="title">Quarto Basics</h1>
                       </div>
   </div>
     
@@ -149,6 +148,7 @@ background-size: cover;
   <div class="quarto-title-meta">
 
       
+    
       
     </div>
     
@@ -158,7 +158,7 @@ background-size: cover;
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -171,33 +171,93 @@ background-size: cover;
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1689713301014" data-listing-reading-time-sort="0">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1702792800000" data-listing-file-modified-sort="1702794622468" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
 <div class="thumbnail">
-<a href="./posts/blog-02/test.html">
-<div class="thumbnail-image">
-
-</div>
-</a><p><a href="./posts/blog-02/test.html"></a></p>
+<p><a href="./posts/blog-04-add-binary/index.html"> <img src="./posts/blog-04-add-binary/image.jpg" class="thumbnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="./posts/blog-02/test.html">
+<a href="./posts/blog-04-add-binary/index.html">
 <h3 class="no-anchor listing-title">
+Leet Code Problem Add Binary Solution in Python
 </h3>
 <div class="listing-subtitle">
 
 </div>
 <div class="listing-description">
-<img src="test_files/figure-html/cell-12-output-1.png" class="img-fluid">
+<p>solution to leet code problem add binary.</p>
 </div>
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/blog-02/test.html"> </a>
+<a href="./posts/blog-04-add-binary/index.html">
+<div class="listing-date">
+Dec 17, 2023
+</div>
+<div class="listing-author">
+Xianzhi Wang
+</div>
+</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1689663600000" data-listing-file-modified-sort="1689715217647" data-listing-reading-time-sort="0.005">
+<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1683003600000" data-listing-file-modified-sort="1702793107901" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26">
 <div class="thumbnail">
-<p><a href="./posts/blog-01-svm/svm_test.html"> <img src="./posts/blog-01-svm/image.jpg" class="thumnail-image"> </a></p>
+<p><a href="./posts/blog-03-ml-0451-proj/index.html"> <img src="./posts/blog-03-ml-0451-proj/image.jpg" class="thumbnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/blog-03-ml-0451-proj/index.html">
+<h3 class="no-anchor listing-title">
+ML Final Project
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Final Project on prediction of Incorporation using replication data file on Russian Historical Factory level data from Professor Gregg, Middlebury College, Vermont</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/blog-03-ml-0451-proj/index.html">
+<div class="listing-date">
+May 2, 2023
+</div>
+<div class="listing-author">
+Prateek and Xianzhi
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1681102800000" data-listing-file-modified-sort="1702797899874" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./posts/blog-02-test/test.html"> <img src="./posts/blog-02-test/image.png" class="thumbnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/blog-02-test/test.html">
+<h3 class="no-anchor listing-title">
+Test
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>A Test</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/blog-02-test/test.html">
+<div class="listing-date">
+Apr 10, 2023
+</div>
+<div class="listing-author">
+Xianzhi
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1680670800000" data-listing-file-modified-sort="1702797956688" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<div class="thumbnail">
+<p><a href="./posts/blog-01-svm/svm_test.html"> <img src="./posts/blog-01-svm/image.jpg" class="thumbnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/blog-01-svm/svm_test.html">
@@ -215,7 +275,7 @@ SVM
 <div class="metadata">
 <a href="./posts/blog-01-svm/svm_test.html">
 <div class="listing-date">
-Jul 18, 2023
+Apr 5, 2023
 </div>
 <div class="listing-author">
 Xianzhi
@@ -223,40 +283,12 @@ Xianzhi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1683010800000" data-listing-file-modified-sort="1689713300986" data-listing-reading-time-sort="25.375">
+<div class="quarto-post image-right" data-index="4" data-listing-date-sort="1673330400000" data-listing-file-modified-sort="1702793107777" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
 <div class="thumbnail">
-<p><a href="./posts/blog-final/index.html"> <img src="./posts/blog-final/image.jpg" class="thumnail-image"> </a></p>
+<p><a href="./posts/blog-00-example/index.html"> <img src="./posts/blog-00-example/image.jpg" class="thumbnail-image"> </a></p>
 </div>
 <div class="body">
-<a href="./posts/blog-final/index.html">
-<h3 class="no-anchor listing-title">
-ML Final Project
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Final Project on prediction of Incorporation using replication data file on Russian Historical Factory level data from Professor Gregg, Middlebury College, Vermont</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="./posts/blog-final/index.html">
-<div class="listing-date">
-May 2, 2023
-</div>
-<div class="listing-author">
-Prateek and Xianzhi
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1673337600000" data-listing-file-modified-sort="1689713300539" data-listing-reading-time-sort="2.205">
-<div class="thumbnail">
-<p><a href="./posts/blog-example/index.html"> <img src="./posts/blog-example/image.jpg" class="thumnail-image"> </a></p>
-</div>
-<div class="body">
-<a href="./posts/blog-example/index.html">
+<a href="./posts/blog-00-example/index.html">
 <h3 class="no-anchor listing-title">
 Hello Blog
 </h3>
@@ -269,7 +301,7 @@ Hello Blog
 </a>
 </div>
 <div class="metadata">
-<a href="./posts/blog-example/index.html">
+<a href="./posts/blog-00-example/index.html">
 <div class="listing-date">
 Jan 10, 2023
 </div>
@@ -311,9 +343,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -325,7 +371,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -361,24 +424,128 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

@@ -2,10 +2,11 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/blog-02/test.html",
+      "/posts/blog-04-add-binary/index.html",
+      "/posts/blog-03-ml-0451-proj/index.html",
+      "/posts/blog-02-test/test.html",
       "/posts/blog-01-svm/svm_test.html",
-      "/posts/blog-final/index.html",
-      "/posts/blog-example/index.html"
+      "/posts/blog-00-example/index.html"
     ]
   }
 ]
