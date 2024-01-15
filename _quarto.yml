@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Quarto Basics"
+  title: "ShawnZ's Very Own blog"
   navbar:
     background: "#112a39"
     right:
@@ -14,7 +14,7 @@ website:
 
 format:
   html:
-    title-block-banner: img/landscape.png
+    title-block-banner: img/sunset_no_vacancy.jpg
     theme: cosmo
     css: styles.css
 
