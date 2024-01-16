@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "ShawnZ's Very Own blog"
+  title: "December's Very Own blog"
   navbar:
     background: "#112a39"
     right:

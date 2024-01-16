@@ -1,5 +1,5 @@
 ---
-title: "ShawnZ's Very Own blog"
+title: "December's Very Own blog"
 listing:
   contents: posts
   sort: "date desc"

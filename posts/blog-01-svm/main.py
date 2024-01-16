@@ -202,6 +202,23 @@ class supp_vec_machine():
         myscore = 1 * (mypredict == y) 
         return myscore.mean()
 
+    
+    def bare_bone_plot(self, X: np.array, y: np.array, size_1: int, size_2: int) -> None:
+        plt.rcParams["figure.figsize"] = (size_1,size_2)
+        mypredict = self.predict(X)
+        # score = (mypredict == y).mean()
+        print(f"the weight beta is: {self.beta}")
+        a_0 = self.beta[0][0]
+        a_1 = self.beta[1][0]
+        a_2 = self.beta[2][0]
+        fig = plt.scatter(X[:,0], X[:,1], c = y)
+        xlab = plt.xlabel("Feature 1")
+        ylab = plt.ylabel("Feature 2")
+        f1 = np.linspace(-7.5, 7.5, 501)
+        p = plt.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
+        # title = plt.gca().set_title(f"score is: {round(score,3)}")
+        title = plt.gca().set_title("our regression")
+
     def helper_plot(self, X, y, subplot, label):
         '''
         Helper method for big_plot
@@ -213,7 +230,7 @@ class supp_vec_machine():
         fig = subplot.scatter(X[:,0], X[:,1], c = y)
         subplot.set(xlabel="Feature 1", ylabel="Feature 2", title=f"score: {round(score, 3)} using {label} data")
         # the line
-        f1 = np.linspace(2.5, 5.5, 501)
+        f1 = np.linspace(-1, 3, 501)
         # p = subplot.plot(f1,  -(a_2/a_1) - (a_0/a_1)*f1, color = "black")
         p = subplot.plot(f1,  +(a_2/a_1) - (a_0/a_1)*f1, color = "black")
        

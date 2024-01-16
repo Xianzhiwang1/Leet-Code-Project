@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2023-04-05">
 <meta name="description" content="Learn SVM">
 
-<title>ShawnZ’s Very Own blog - SVM</title>
+<title>December’s Very Own blog - SVM</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -119,7 +119,7 @@ background-size: cover;
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">ShawnZ’s Very Own blog</span>
+    <span class="navbar-title">December’s Very Own blog</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -187,7 +187,10 @@ background-size: cover;
 
 
 
-<div class="cell">
+<section id="my-svm-implementation" class="level4">
+<h4 class="anchored" data-anchor-id="my-svm-implementation">My SVM implementation</h4>
+<p>The source code of this implementation could be found in this <a href="https://github.com/Xianzhiwang1/Leet-Code-Project/tree/main/posts/blog-01-svm">directory</a> on github along with this blog post.</p>
+<div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
@@ -195,77 +198,89 @@ background-size: cover;
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># from final_project_code import FinalProject </span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># from newton_raphson import Newton_Raphson</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># from final_plot import plot_stuff</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> my_svm <span class="im">import</span> supp_vec_machine</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> main <span class="im">import</span> supp_vec_machine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload</code></pre>
 </div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># import seaborn as sns</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># from mlxtend.plotting import plot_decision_regions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from sklearn.metrics import roc_curve</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from sklearn.metrics import roc_auc_score</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># from sklearn.metrics import confusion_matrix</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># from sklearn.metrics import classification_report</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># FP = FinalProject()</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_csv("./AG_Corp_Prod_DataBase.csv")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># import seaborn as sns</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># from mlxtend.plotting import plot_decision_regions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># df = FP.balanced_one_minus_one(df)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># train, validate, test = FP.split_data(df)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># df_train, X_train, y_train = FP.prepare_data(train)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># df_validate, X_validate, y_validate= FP.prepare_data(validate)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># df_test, X_test, y_test = FP.prepare_data(test)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mySVC = SVC(kernel="linear", gamma="auto", shrinking=False)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mySVC.fit(X_test, y_test)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cols = ['PowerperWorker', 'RevperGrandWorker']</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cols = ['logWorkers', 'logPower'] </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># NR = Newton_Raphson()</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># FP = FinalProject()</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train,y_train = FP.make_ready_for_regression(X_train, y_train, cols) </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># X_validate,y_validate= FP.make_ready_for_regression(X_validate, y_validate, cols) </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># X_test, y_test = FP.make_ready_for_regression(X_test, y_test, cols)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm = supp_vec_machine(row_length=row_length)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm.fit(X_test,y_test, max_iter=1e3, alpha=1, tol=1e-5, lamb=0.5)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mySVC = SVC(kernel="linear", gamma="auto", shrinking=False)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mySVC.fit(X_test, y_test)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print(mysvm.weights)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># print(mysvm.beta)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm = supp_vec_machine(row_length=row_length)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm.fit(X_test,y_test, max_iter=1e3, alpha=1, tol=1e-5, lamb=0.5)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm.big_plot(X_train, y_train, X_validate, y_validate, X_test, y_test, 9,3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print(mysvm.weights)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># print(mysvm.beta)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mysvm.big_plot(X_train, y_train, X_validate, y_validate, X_test, y_test, 9,3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X,y<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.2</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>X_validate, y_validate<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.25</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>X_test, y_test<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.30</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">4</span>,<span class="dv">4</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:,<span class="dv">0</span>], X[:,<span class="dv">1</span>], c<span class="op">=</span>y)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>labels<span class="op">=</span>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Feature 1"</span>, ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>X,y<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.28</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_validate, y_validate<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.30</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X_test, y_test<span class="op">=</span> make_moons(<span class="dv">100</span>, shuffle<span class="op">=</span><span class="va">True</span>, noise <span class="op">=</span> <span class="fl">0.32</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">4</span>,<span class="dv">4</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:,<span class="dv">0</span>], X[:,<span class="dv">1</span>], c<span class="op">=</span>y)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>labels<span class="op">=</span>plt.gca().<span class="bu">set</span>(xlabel<span class="op">=</span><span class="st">"Feature 1"</span>, ylabel<span class="op">=</span><span class="st">"Feature 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="svm_test_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+<p><img src="svm_test_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mysvm1 <span class="op">=</span> supp_vec_machine()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>mysvm1.fit(X,y, max_iter<span class="op">=</span><span class="fl">1e3</span>, alpha<span class="op">=</span><span class="dv">1</span>, tol<span class="op">=</span><span class="fl">1e-6</span>, lamb<span class="op">=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>soln <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">"linear"</span>, gamma<span class="op">=</span><span class="st">"auto"</span>, shrinking<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>soln.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<style>#sk-container-id-3 {color: black;background-color: white;}#sk-container-id-3 pre{padding: 0;}#sk-container-id-3 div.sk-toggleable {background-color: white;}#sk-container-id-3 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-3 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-3 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-3 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-3 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-3 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-3 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-3 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-3 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-3 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-3 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-3 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-3 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-3 div.sk-item {position: relative;z-index: 1;}#sk-container-id-3 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-3 div.sk-item::before, #sk-container-id-3 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-3 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-3 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-3 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-3 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-3 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-3 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-3 div.sk-label-container {text-align: center;}#sk-container-id-3 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-3 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>SVC(gamma='auto', kernel='linear', shrinking=False)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked=""><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">SVC</label><div class="sk-toggleable__content"><pre>SVC(gamma='auto', kernel='linear', shrinking=False)</pre></div></div></div></div></div>
+</div>
+</div>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(soln.coef_)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(soln.intercept_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.69190546 -1.63813064]]
+[-0.03091258]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(soln.coef_)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>a_0 <span class="op">=</span> soln.coef_[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>a_1 <span class="op">=</span> soln.coef_[<span class="dv">0</span>][<span class="dv">1</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(soln.intercept_[<span class="dv">0</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">6</span>,<span class="dv">6</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.scatter(X_train[:,<span class="dv">0</span>], X_train[:,<span class="dv">1</span>], c <span class="op">=</span> y_train)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>xlab <span class="op">=</span> plt.xlabel(<span class="st">"Feature 1"</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ylab <span class="op">=</span> plt.ylabel(<span class="st">"Feature 2"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">1.5</span>,<span class="fl">3.5</span>, <span class="dv">501</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> plt.plot(f1, <span class="op">-</span> (soln.intercept_<span class="op">/</span>a_1) <span class="op">-</span> (a_0<span class="op">/</span>a_1)<span class="op">*</span>f1, color <span class="op">=</span> <span class="st">"black"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> plt.gca().set_title(<span class="ss">f"SVM using </span><span class="sc">{</span>soln<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.69190546 -1.63813064]]
+-0.030912584333047263</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="svm_test_files/figure-html/cell-12-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mysvm <span class="op">=</span> supp_vec_machine()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mysvm.fit(X_train, y_train, max_iter<span class="op">=</span><span class="fl">1e5</span>, alpha<span class="op">=</span><span class="dv">1</span>, tol<span class="op">=</span><span class="fl">1e-6</span>, lamb<span class="op">=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>iter_count: 10
 iter_count: 20
@@ -365,32 +380,650 @@ iter_count: 950
 iter_count: 960
 iter_count: 970
 iter_count: 980
-iter_count: 990</code></pre>
+iter_count: 990
+iter_count: 1000
+iter_count: 1010
+iter_count: 1020
+iter_count: 1030
+iter_count: 1040
+iter_count: 1050
+iter_count: 1060
+iter_count: 1070
+iter_count: 1080
+iter_count: 1090
+iter_count: 1100
+iter_count: 1110
+iter_count: 1120
+iter_count: 1130
+iter_count: 1140
+iter_count: 1150
+iter_count: 1160
+iter_count: 1170
+iter_count: 1180
+iter_count: 1190
+iter_count: 1200
+iter_count: 1210
+iter_count: 1220
+iter_count: 1230
+iter_count: 1240
+iter_count: 1250
+iter_count: 1260
+iter_count: 1270
+iter_count: 1280
+iter_count: 1290
+iter_count: 1300
+iter_count: 1310
+iter_count: 1320
+iter_count: 1330
+iter_count: 1340
+iter_count: 1350
+iter_count: 1360
+iter_count: 1370
+iter_count: 1380
+iter_count: 1390
+iter_count: 1400
+iter_count: 1410
+iter_count: 1420
+iter_count: 1430
+iter_count: 1440
+iter_count: 1450
+iter_count: 1460
+iter_count: 1470
+iter_count: 1480
+iter_count: 1490
+iter_count: 1500
+iter_count: 1510
+iter_count: 1520
+iter_count: 1530
+iter_count: 1540
+iter_count: 1550
+iter_count: 1560
+iter_count: 1570
+iter_count: 1580
+iter_count: 1590
+iter_count: 1600
+iter_count: 1610
+iter_count: 1620
+iter_count: 1630
+iter_count: 1640
+iter_count: 1650
+iter_count: 1660
+iter_count: 1670
+iter_count: 1680
+iter_count: 1690
+iter_count: 1700
+iter_count: 1710
+iter_count: 1720
+iter_count: 1730
+iter_count: 1740
+iter_count: 1750
+iter_count: 1760
+iter_count: 1770
+iter_count: 1780
+iter_count: 1790
+iter_count: 1800
+iter_count: 1810
+iter_count: 1820
+iter_count: 1830
+iter_count: 1840
+iter_count: 1850
+iter_count: 1860
+iter_count: 1870
+iter_count: 1880
+iter_count: 1890
+iter_count: 1900
+iter_count: 1910
+iter_count: 1920
+iter_count: 1930
+iter_count: 1940
+iter_count: 1950
+iter_count: 1960
+iter_count: 1970
+iter_count: 1980
+iter_count: 1990
+iter_count: 2000
+iter_count: 2010
+iter_count: 2020
+iter_count: 2030
+iter_count: 2040
+iter_count: 2050
+iter_count: 2060
+iter_count: 2070
+iter_count: 2080
+iter_count: 2090
+iter_count: 2100
+iter_count: 2110
+iter_count: 2120
+iter_count: 2130
+iter_count: 2140
+iter_count: 2150
+iter_count: 2160
+iter_count: 2170
+iter_count: 2180
+iter_count: 2190
+iter_count: 2200
+iter_count: 2210
+iter_count: 2220
+iter_count: 2230
+iter_count: 2240
+iter_count: 2250
+iter_count: 2260
+iter_count: 2270
+iter_count: 2280
+iter_count: 2290
+iter_count: 2300
+iter_count: 2310
+iter_count: 2320
+iter_count: 2330
+iter_count: 2340
+iter_count: 2350
+iter_count: 2360
+iter_count: 2370
+iter_count: 2380
+iter_count: 2390
+iter_count: 2400
+iter_count: 2410
+iter_count: 2420
+iter_count: 2430
+iter_count: 2440
+iter_count: 2450
+iter_count: 2460
+iter_count: 2470
+iter_count: 2480
+iter_count: 2490
+iter_count: 2500
+iter_count: 2510
+iter_count: 2520
+iter_count: 2530
+iter_count: 2540
+iter_count: 2550
+iter_count: 2560
+iter_count: 2570
+iter_count: 2580
+iter_count: 2590
+iter_count: 2600
+iter_count: 2610
+iter_count: 2620
+iter_count: 2630
+iter_count: 2640
+iter_count: 2650
+iter_count: 2660
+iter_count: 2670
+iter_count: 2680
+iter_count: 2690
+iter_count: 2700
+iter_count: 2710
+iter_count: 2720
+iter_count: 2730
+iter_count: 2740
+iter_count: 2750
+iter_count: 2760
+iter_count: 2770
+iter_count: 2780
+iter_count: 2790
+iter_count: 2800
+iter_count: 2810
+iter_count: 2820
+iter_count: 2830
+iter_count: 2840
+iter_count: 2850
+iter_count: 2860
+iter_count: 2870
+iter_count: 2880
+iter_count: 2890
+iter_count: 2900
+iter_count: 2910
+iter_count: 2920
+iter_count: 2930
+iter_count: 2940
+iter_count: 2950
+iter_count: 2960
+iter_count: 2970
+iter_count: 2980
+iter_count: 2990
+iter_count: 3000
+iter_count: 3010
+iter_count: 3020
+iter_count: 3030
+iter_count: 3040
+iter_count: 3050
+iter_count: 3060
+iter_count: 3070
+iter_count: 3080
+iter_count: 3090
+iter_count: 3100
+iter_count: 3110
+iter_count: 3120
+iter_count: 3130
+iter_count: 3140
+iter_count: 3150
+iter_count: 3160
+iter_count: 3170
+iter_count: 3180
+iter_count: 3190
+iter_count: 3200
+iter_count: 3210
+iter_count: 3220
+iter_count: 3230
+iter_count: 3240
+iter_count: 3250
+iter_count: 3260
+iter_count: 3270
+iter_count: 3280
+iter_count: 3290
+iter_count: 3300
+iter_count: 3310
+iter_count: 3320
+iter_count: 3330
+iter_count: 3340
+iter_count: 3350
+iter_count: 3360
+iter_count: 3370
+iter_count: 3380
+iter_count: 3390
+iter_count: 3400
+iter_count: 3410
+iter_count: 3420
+iter_count: 3430
+iter_count: 3440
+iter_count: 3450
+iter_count: 3460
+iter_count: 3470
+iter_count: 3480
+iter_count: 3490
+iter_count: 3500
+iter_count: 3510
+iter_count: 3520
+iter_count: 3530
+iter_count: 3540
+iter_count: 3550
+iter_count: 3560
+iter_count: 3570
+iter_count: 3580
+iter_count: 3590
+iter_count: 3600
+iter_count: 3610
+iter_count: 3620
+iter_count: 3630
+iter_count: 3640
+iter_count: 3650
+iter_count: 3660
+iter_count: 3670
+iter_count: 3680
+iter_count: 3690
+iter_count: 3700
+iter_count: 3710
+iter_count: 3720
+iter_count: 3730
+iter_count: 3740
+iter_count: 3750
+iter_count: 3760
+iter_count: 3770
+iter_count: 3780
+iter_count: 3790
+iter_count: 3800
+iter_count: 3810
+iter_count: 3820
+iter_count: 3830
+iter_count: 3840
+iter_count: 3850
+iter_count: 3860
+iter_count: 3870
+iter_count: 3880
+iter_count: 3890
+iter_count: 3900
+iter_count: 3910
+iter_count: 3920
+iter_count: 3930
+iter_count: 3940
+iter_count: 3950
+iter_count: 3960
+iter_count: 3970
+iter_count: 3980
+iter_count: 3990
+iter_count: 4000
+iter_count: 4010
+iter_count: 4020
+iter_count: 4030
+iter_count: 4040
+iter_count: 4050
+iter_count: 4060
+iter_count: 4070
+iter_count: 4080
+iter_count: 4090
+iter_count: 4100
+iter_count: 4110
+iter_count: 4120
+iter_count: 4130
+iter_count: 4140
+iter_count: 4150
+iter_count: 4160
+iter_count: 4170
+iter_count: 4180
+iter_count: 4190
+iter_count: 4200
+iter_count: 4210
+iter_count: 4220
+iter_count: 4230
+iter_count: 4240
+iter_count: 4250
+iter_count: 4260
+iter_count: 4270
+iter_count: 4280
+iter_count: 4290
+iter_count: 4300
+iter_count: 4310
+iter_count: 4320
+iter_count: 4330
+iter_count: 4340
+iter_count: 4350
+iter_count: 4360
+iter_count: 4370
+iter_count: 4380
+iter_count: 4390
+iter_count: 4400
+iter_count: 4410
+iter_count: 4420
+iter_count: 4430
+iter_count: 4440
+iter_count: 4450
+iter_count: 4460
+iter_count: 4470
+iter_count: 4480
+iter_count: 4490
+iter_count: 4500
+iter_count: 4510
+iter_count: 4520
+iter_count: 4530
+iter_count: 4540
+iter_count: 4550
+iter_count: 4560
+iter_count: 4570
+iter_count: 4580
+iter_count: 4590
+iter_count: 4600
+iter_count: 4610
+iter_count: 4620
+iter_count: 4630
+iter_count: 4640
+iter_count: 4650
+iter_count: 4660
+iter_count: 4670
+iter_count: 4680
+iter_count: 4690
+iter_count: 4700
+iter_count: 4710
+iter_count: 4720
+iter_count: 4730
+iter_count: 4740
+iter_count: 4750
+iter_count: 4760
+iter_count: 4770
+iter_count: 4780
+iter_count: 4790
+iter_count: 4800
+iter_count: 4810
+iter_count: 4820
+iter_count: 4830
+iter_count: 4840
+iter_count: 4850
+iter_count: 4860
+iter_count: 4870
+iter_count: 4880
+iter_count: 4890
+iter_count: 4900
+iter_count: 4910
+iter_count: 4920
+iter_count: 4930
+iter_count: 4940
+iter_count: 4950
+iter_count: 4960
+iter_count: 4970
+iter_count: 4980
+iter_count: 4990
+iter_count: 5000
+iter_count: 5010
+iter_count: 5020
+iter_count: 5030
+iter_count: 5040
+iter_count: 5050
+iter_count: 5060
+iter_count: 5070
+iter_count: 5080
+iter_count: 5090
+iter_count: 5100
+iter_count: 5110
+iter_count: 5120
+iter_count: 5130
+iter_count: 5140
+iter_count: 5150
+iter_count: 5160
+iter_count: 5170
+iter_count: 5180
+iter_count: 5190
+iter_count: 5200
+iter_count: 5210
+iter_count: 5220
+iter_count: 5230
+iter_count: 5240
+iter_count: 5250
+iter_count: 5260
+iter_count: 5270
+iter_count: 5280
+iter_count: 5290
+iter_count: 5300
+iter_count: 5310
+iter_count: 5320
+iter_count: 5330
+iter_count: 5340
+iter_count: 5350
+iter_count: 5360
+iter_count: 5370
+iter_count: 5380
+iter_count: 5390
+iter_count: 5400
+iter_count: 5410
+iter_count: 5420
+iter_count: 5430
+iter_count: 5440
+iter_count: 5450
+iter_count: 5460
+iter_count: 5470
+iter_count: 5480
+iter_count: 5490
+iter_count: 5500
+iter_count: 5510
+iter_count: 5520
+iter_count: 5530
+iter_count: 5540
+iter_count: 5550
+iter_count: 5560
+iter_count: 5570
+iter_count: 5580
+iter_count: 5590
+iter_count: 5600
+iter_count: 5610
+iter_count: 5620
+iter_count: 5630
+iter_count: 5640
+iter_count: 5650
+iter_count: 5660
+iter_count: 5670
+iter_count: 5680
+iter_count: 5690
+iter_count: 5700
+iter_count: 5710
+iter_count: 5720
+iter_count: 5730
+iter_count: 5740
+iter_count: 5750
+iter_count: 5760
+iter_count: 5770
+iter_count: 5780
+iter_count: 5790
+iter_count: 5800
+iter_count: 5810
+iter_count: 5820
+iter_count: 5830
+iter_count: 5840
+iter_count: 5850
+iter_count: 5860
+iter_count: 5870
+iter_count: 5880
+iter_count: 5890
+iter_count: 5900
+iter_count: 5910
+iter_count: 5920
+iter_count: 5930
+iter_count: 5940
+iter_count: 5950
+iter_count: 5960
+iter_count: 5970
+iter_count: 5980
+iter_count: 5990
+iter_count: 6000
+iter_count: 6010
+iter_count: 6020
+iter_count: 6030
+iter_count: 6040
+iter_count: 6050
+iter_count: 6060
+iter_count: 6070
+iter_count: 6080
+iter_count: 6090
+iter_count: 6100
+iter_count: 6110
+iter_count: 6120
+iter_count: 6130
+iter_count: 6140
+iter_count: 6150
+iter_count: 6160
+iter_count: 6170
+iter_count: 6180
+iter_count: 6190
+iter_count: 6200
+iter_count: 6210
+iter_count: 6220
+iter_count: 6230
+iter_count: 6240
+iter_count: 6250
+iter_count: 6260
+iter_count: 6270
+iter_count: 6280
+iter_count: 6290
+iter_count: 6300
+iter_count: 6310
+iter_count: 6320
+iter_count: 6330
+iter_count: 6340
+iter_count: 6350
+iter_count: 6360
+iter_count: 6370
+iter_count: 6380
+iter_count: 6390
+iter_count: 6400
+iter_count: 6410
+iter_count: 6420
+iter_count: 6430
+iter_count: 6440
+iter_count: 6450
+iter_count: 6460
+iter_count: 6470
+iter_count: 6480
+iter_count: 6490
+iter_count: 6500
+iter_count: 6510
+iter_count: 6520
+iter_count: 6530
+iter_count: 6540
+iter_count: 6550
+iter_count: 6560
+iter_count: 6570
+iter_count: 6580
+iter_count: 6590
+iter_count: 6600
+iter_count: 6610
+iter_count: 6620
+iter_count: 6630
+iter_count: 6640
+iter_count: 6650
+iter_count: 6660
+iter_count: 6670
+iter_count: 6680
+iter_count: 6690
+iter_count: 6700
+iter_count: 6710
+iter_count: 6720
+iter_count: 6730
+iter_count: 6740
+iter_count: 6750
+iter_count: 6760
+iter_count: 6770
+iter_count: 6780
+iter_count: 6790
+iter_count: 6800
+iter_count: 6810
+iter_count: 6820
+iter_count: 6830
+iter_count: 6840
+iter_count: 6850
+iter_count: 6860
+iter_count: 6870
+iter_count: 6880
+iter_count: 6890
+iter_count: 6900
+iter_count: 6910
+iter_count: 6920
+iter_count: 6930
+iter_count: 6940
+iter_count: 6950
+iter_count: 6960
+iter_count: 6970
+iter_count: 6980
+iter_count: 6990
+iter_count: 7000
+iter_count: 7010
+iter_count: 7020
+iter_count: 7030
+iter_count: 7040
+iter_count: 7050
+iter_count: 7060
+iter_count: 7070
+iter_count: 7080
+iter_count: 7090
+iter_count: 7100
+iter_count: 7110
+iter_count: 7120
+iter_count: 7130
+iter_count: 7140
+iter_count: 7150
+iter_count: 7160
+iter_count: 7170
+iter_count: 7180
+iter_count: 7190
+iter_count: 7200
+iter_count: 7210
+iter_count: 7220
+Converged with 7227 iterations
+The weights we end up with is: [[ 0.27414747]
+ [-0.08302919]
+ [ 0.5742264 ]]</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>yourSVC <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">"linear"</span>, gamma<span class="op">=</span><span class="st">"auto"</span>, shrinking<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>yourSVC.fit(X, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-<style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>SVC(gamma='auto', kernel='linear', shrinking=False)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">SVC</label><div class="sk-toggleable__content"><pre>SVC(gamma='auto', kernel='linear', shrinking=False)</pre></div></div></div></div></div>
-</div>
-</div>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(yourSVC.coef_)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(yourSVC.intercept_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[ 0.87393314 -1.83503289]]
-[0.07359716]</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mysvm1.big_plot(X, y, X_validate, y_validate, X_test, y_test, <span class="dv">9</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our implementation</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mysvm.big_plot(X_train, y_train, X_validate, y_validate, X_test, y_test, <span class="dv">9</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="svm_test_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+<p><img src="svm_test_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+</section>
+<section id="second-take" class="level4">
+<h4 class="anchored" data-anchor-id="second-take">Second Take</h4>
+<p>Our first implementation seems off, let us do it all over again from scratch.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
