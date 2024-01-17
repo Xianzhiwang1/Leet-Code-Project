@@ -53,6 +53,60 @@ class Solution:
             result = result + strs[0][i]
         return result
 
+    # Two Sum
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        result = []
+        i = 0 
+        while i < len(nums):
+            summand = nums[i]
+            j = i+1
+            while j < len(nums):
+                if summand + nums[j] == target:
+                    result.append(i)
+                    result.append(j)
+                j = j+1
+            i = i+1
+        return result
+    
+    # 28 find the index of the first occurrence in a string
+    def strStrBAD(self, haystack: str, needle: str) -> int:
+        result=0
+        counter=0
+        i = 0
+        j = 0
+        if len(needle) > len(haystack):
+            return -1
+        while counter < len(haystack):
+            while j < len(haystack):
+                if needle[i] == haystack[j]:
+                    if i == (len(needle)-1):
+                        result = j - len(needle) + 1
+                        return result
+                    i = i+1
+                    j = j+1
+            i = 0
+            counter +=1
+            j = counter
+                    # if needle[i] == haystack[j]:
+                    #     i=i+1
+                    #     j=j+1
+                    # else:
+                    #     j = j+1
+        return -1
+    # 28 good solution O(n^2)
+    def strStrGOOD(self, haystack: str, needle: str) -> int:
+        if needle == "":
+            return -1
+        for i in range(len(haystack) + 1 - len(needle)):
+            for j in range(len(needle)):
+                if haystack[i+j] != needle[j]:
+                    break
+                if j == len(needle) -1:
+                    return i
+        return -1
+
+
+
 
 
                 
