@@ -76,7 +76,7 @@ class supp_vec_machine():
             # nabla_b = np.where(1-y_hat<=0, 0, nabla_b)
             # nabla_b = sum(nabla_b)
             # self.b = -nabla_b * alpha / n
-            if j % 10 == 0:
+            if j % 500 == 0:
                 print(f"iter_count: {j}")
             j = j + 1
             if not np.any(np.abs(self.weights_old- self.weights)>tol):

@@ -15,7 +15,9 @@ website:
 format:
   html:
     title-block-banner: img/sunset_no_vacancy.jpg
-    theme: cosmo
+    theme: 
+      light: flatly
+      dark: darkly
     css: styles.css
 
 

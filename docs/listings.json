@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/blog-06-sort-colors/index.html",
       "/posts/blog-05-len-of-last-word/index.html",
       "/posts/blog-04-add-binary/index.html",
       "/posts/blog-03-ml-0451-proj/index.html",
